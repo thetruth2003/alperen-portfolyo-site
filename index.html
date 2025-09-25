@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vCard - Personal Portfolio</title>
+
+  <!--
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
+
+  <!--
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!--
+    - #MAIN
+  -->
+
+  <main>
+
+    <!--
+      - #SIDEBAR
+    -->
+
+    <aside class="sidebar" data-sidebar>
+
+      <div class="sidebar-info">
+
+        <figure class="avatar-box">
+          <img src="./assets/images/my-avatar.png" alt="Richard hanrick" width="80">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name" title="Richard hanrick">Alperen Baltacı</h1>
+
+          <p class="title">Gameplay Developer</p>
+        </div>
+
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Show Contacts</span>
+
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+
+      </div>
+
+      <div class="sidebar-info_more">
+
+        <div class="separator"></div>
+        <ul class="contacts-list">
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Email</p>
+
+              <a href="mailto:richard@example.com" class="contact-link">alperenbaltaci94@gmail.com</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="phone-portrait-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Phone</p>
+
+              <a href="tel:+12133522795" class="contact-link">+48 506328698</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Birthday</p>
+
+              <time datetime="1982-06-23">Feb 17 2003</time>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Location</p>
+
+              <address>Warsaw , Poland</address>
+            </div>
+
+          </li>
+
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+
+          <li class="social-item">
+            <a href="https://github.com/thetruth2003" class="social-link" target="_blank" rel="noopener noreferrer">
+              <ion-icon name="logo-github"></ion-icon>
+            </a>
+          </li>
+          
+          <li class="social-item">
+            <a href="https://www.linkedin.com/in/alperen-baltacı-9656aa174/" class="social-link" target="_blank" rel="noopener noreferrer">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
+
+
+
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link>About</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Resume</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Portfolio</button>
+          </li>
+
+          <!-- <li class="navbar-item">
+             <button class="navbar-link" data-nav-link>Blog</button>
+          </li> -->
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Contact</button>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">About me</h2>
+        </header>
+
+        <section class="about-text">
+          <p>
+            I’m a 22-year-old full-stack and game developer from Türkiye, currently gaining international experience through an internship in Poland. With a background in both frontend and backend development, I enjoy building everything from dynamic web apps to interactive games.
+
+            I'm a detail-focused team player with a perfectionist streak, known for taking initiative and leading when needed. Passionate about clean code, strong collaboration, and constantly pushing the limits of what I can build.
+            <p>
+          </section>
+
+
+        <!--
+          - service
+        -->
+
+        <section class="service">
+
+          <h3 class="h3 service-title">What i'm doing</h3>
+
+          <ul class="service-list">
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-design.svg
+                " alt="design icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Game design</h4>
+
+                <p class="service-item-text">
+                  Designing immersive mechanics, systems, and levels with a focus on player experience, narrative flow, and gameplay balance — from concept to implementation.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-dev.svg" alt="Web development icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Web development</h4>
+
+                <p class="service-item-text">
+                  Creating responsive and dynamic web applications using modern stacks like React and Node.js, with a focus on clean code and user-centered design.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-app.svg" alt="mobile app icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Mobile apps</h4>
+
+                <p class="service-item-text">
+                   Developing cross-platform mobile apps using Flutter and Firebase, focusing on smooth UX, real-time features, and scalable architecture.
+                </p>
+              </div>
+
+            </li>
+
+            <li class="service-item">
+
+              <div class="service-icon-box">
+                <img src="./assets/images/icon-photo.svg" alt="camera icon" width="40">
+              </div>
+
+              <div class="service-content-box">
+                <h4 class="h4 service-item-title">Game development</h4>
+
+                <p class="service-item-text">
+                  Building gameplay systems, tools, and interactive mechanics using Unity and Unreal Engine. Experienced in both solo prototyping and team-based production.
+                </p>
+              </div>
+
+            </li>
+
+          </ul>
+
+        </section>
+
+
+        <!--
+          - testimonials
+        -->
+
+        <section class="testimonials">
+
+          <h3 class="h3 testimonials-title">Testimonials</h3>
+
+          <ul class="testimonials-list has-scrollbar">
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Piotr Matecki</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                   “Alperen has consistently demonstrated a strong work ethic and remarkable attention to detail during his internship with us. His analytical thinking and ability to deliver high-quality solutions made a tangible impact, especially in the automation module he helped optimize. He showed strong ownership of tasks and wasn’t afraid to propose improvements where needed. I was particularly impressed by how quickly he grasped our systems and the way he collaborated with both the dev and QA teams to solve complex integration issues.”
+— Piotr Matecki, Project Manager at FutureGames
+                  </p>
+                </div>
+
+              </div>
+            </li>
+
+            <li class="testimonials-item">
+              <div class="content-card" data-testimonials-item>
+
+                <figure class="testimonials-avatar-box">
+                  <img src="./assets/images/avatar-4.png" alt="Jessica miller" width="60" data-testimonials-avatar>
+                </figure>
+
+                <h4 class="h4 testimonials-item-title" data-testimonials-title>Çağrı</h4>
+
+                <div class="testimonials-text" data-testimonials-text>
+                  <p>
+                    <p>
+                    Hiring Alperen was a great decision for our automation projects in the EV charging sector. 
+                    From day one, he showed not only solid technical knowledge but also a rare sense of responsibility and adaptability.
+                     He quickly grasped our systems and contributed valuable improvements to both frontend dashboards and backend logic. His ability to learn fast, communicate clearly, and solve problems with precision made him a key part of our development team. I have full confidence in his potential and would gladly work with him again.
+                  </p>
+                  </p>
+                </div>
+
+              </div>
+            </li>
+        </section>
+
+
+        <!--
+          - testimonials modal
+        -->
+
+        <div class="modal-container" data-modal-container>
+
+          <div class="overlay" data-overlay></div>
+
+          <section class="testimonials-modal">
+
+            <button class="modal-close-btn" data-modal-close-btn>
+              <ion-icon name="close-outline"></ion-icon>
+            </button>
+
+            <div class="modal-img-wrapper">
+              <figure class="modal-avatar-box">
+                <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="80" data-modal-img>
+              </figure>
+
+              <img src="./assets/images/icon-quote.svg" alt="quote icon">
+            </div>
+
+            <div class="modal-content">
+
+              <h4 class="h3 modal-title" data-modal-title>Daniel lewis</h4>
+
+              <time datetime="2021-06-14">14 May, 2025</time>
+
+              <div data-modal-text>
+                <p>
+                  Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
+                  lot of experience
+                  and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
+                  consectetur adipiscing
+                  elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+
+
+        <!--
+          - clients
+        -->
+
+        <section class="clients">
+
+          <h3 class="h3 clients-title">Studios We've Worked With</h3>
+
+          <ul class="clients-list has-scrollbar">
+
+            <li class="clients-item">
+              <a href="#">
+                <img src="./assets/images/cdpr.png" alt="client logo">
+              </a>
+              <h3 class="h3 clients-title">CD Projekt Red</h3>
+            </li>
+            
+            <li class="clients-item">
+              <a href="#">
+                <img src="./assets/images/11bit.png" alt="client logo">
+              </a>
+              <h3 class="h3 clients-title">11 Bit Studios</h3>
+            </li>
+            
+            <li class="clients-item">
+              <a href="#">
+                <img src="./assets/images/poeplecanfly.jpg" alt="client logo">
+              </a>
+              <h3 class="h2 clients-title">People Can Fly</h3>
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #RESUME
+      -->
+
+      <article class="resume" data-page="resume">
+
+        <header>
+          <h2 class="h2 article-title">Resume</h2>
+        </header>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Education</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Atatürk Science Highschool</h4>
+
+              <span>2017 — 2021</span>
+
+              <p class="timeline-text">
+                Built a solid foundation in analytical thinking and problem-solving. Although the curriculum was science-focused, I spent much of my free time learning the basics of programming and experimenting with simple game mechanics.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Yalova University</h4>
+
+              <span>2021 - 2023</span>
+
+              <p class="timeline-text">
+                Focused on core software development skills, including algorithms, object-oriented programming, and database systems. While the main path was general-purpose programming, I consistently directed my projects and learning efforts toward game development whenever possible.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Future Games</h4>
+
+              <span>2023 — Present</span>
+
+              <p class="timeline-text">
+                A game-focused education covering Unity, Unreal Engine, gameplay systems, and collaborative production pipelines. This program allowed me to fully dive into professional game development, refining my technical and creative abilities within team-based projects.
+              </p>
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Game Programmer/Designer</h4>
+
+              <span>2023 — Present</span>
+
+              <p class="timeline-text">
+                Designed and implemented gameplay systems, interaction logic, and player mechanics in several Unity and Unreal Engine projects. Developed UI flows, skill systems, and custom tools for both solo and team-based games. Focused on systemic design and narrative-driven experiences within survival and exploration-focused genres.
+              </p>
+
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 service-item-title">Tool Development</h4>
+
+              <span>2023 — Present</span>
+
+              <p class="timeline-text">
+                Creating custom Unity editor tools and gameplay utilities to improve workflow, iteration speed, and design flexibility.
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Web Designer/Programmer</h4>
+
+              <span>2021 — Present</span>
+
+              <p class="timeline-text">
+                Built responsive websites and full-stack applications using technologies like HTML, CSS, JavaScript, React, and Node.js. Throughout my web development experience, I continuously integrated visual and interactive elements inspired by game UI/UX to make projects more engaging.
+              </p>
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="skill">
+
+          <h3 class="h3 skills-title">My skills</h3>
+
+          <ul class="skills-list content-card">
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Game Design</h5>
+                <data value="80">80%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 80%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Mobile Programmer/Design</h5>
+                <data value="70">70%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 70%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Game Programmer</h5>
+                <data value="90">90%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 90%;"></div>
+              </div>
+
+            </li>
+
+            <li class="skills-item">
+
+              <div class="title-wrapper">
+                <h5 class="h5">Web Proggramer</h5>
+                <data value="50">50%</data>
+              </div>
+
+              <div class="skill-progress-bg">
+                <div class="skill-progress-fill" style="width: 50%;"></div>
+              </div>
+
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #PORTFOLIO
+      -->
+
+      <article class="portfolio" data-page="portfolio">
+
+        <header>
+          <h2 class="h2 article-title">Portfolio</h2>
+        </header>
+
+        <section class="projects">
+
+          <ul class="filter-list">
+
+            <li class="filter-item">
+              <button class="active" data-filter-btn>All</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Game</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Applications</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Web development</button>
+            </li>
+
+          </ul>
+
+          <div class="filter-select-box">
+
+            <button class="filter-select" data-select>
+
+              <div class="select-value" data-selecct-value>Select category</div>
+
+              <div class="select-icon">
+                <ion-icon name="chevron-down"></ion-icon>
+              </div>
+
+            </button>
+
+            <ul class="select-list">
+
+              <li class="select-item">
+                <button data-select-item>All</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Game</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Applications</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Web development</button>
+              </li>
+
+            </ul>
+
+          </div>
+
+<ul class="project-list">
+
+  <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://futuregames.itch.io/darkdescent" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/darkdescent.png" alt="Game" loading="lazy">
+      </figure>
+      <h3 class="project-title">Dark Descent</h3>
+      <p class="project-category">Game Development / Design</p>
+    </a>
+    <p class="project-description">
+      A horror-themed adventure game built in Unity. I was responsible for core gameplay programming, including the skill system, player interaction, and moment-to-moment feel. Collaborated with a multidisciplinary team to bring narrative and mechanics together.
+    </p>
+  </li>
+
+  <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://github.com/thetruth2003/aponun_resmi_koyu-main" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/aponun koyu.PNG" alt="Aponun Koyu" loading="lazy">
+      </figure>
+      <h3 class="project-title">Aponun Koyu</h3>
+      <p class="project-category">Game Development / Solo Project</p>
+    </a>
+    <p class="project-description">
+      A narrative-driven exploration game fully developed by me using Unity. I handled everything from concept to implementation — gameplay mechanics, character movement, environment art, and scripting. A full solo production showcasing my end-to-end development capability.
+    </p>
+  </li>
+
+    <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://github.com/azzinoth01/EDUGameJamTeam2" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/tower.png" alt="tower defense" loading="lazy">
+      </figure>
+      <h3 class="project-title">Tower Defence Game</h3>
+      <p class="project-category">Game Programmer / GameJam</p>
+    </a>
+    <p class="project-description">
+       As the Game Developer in this GameJam project, I designed and implemented all tower types, their attack and defense mechanics, and the enemy wave system using Unity. I was responsible for the core gameplay loop and collaborated with the team to deliver a fully playable tower defense experience within a short time frame.
+    </p>
+  </li>
+
+      <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://futuregames.itch.io/the-last-branch" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/m9WhlZ.png" alt="Last Branch" loading="lazy">
+      </figure>
+      <h3 class="project-title">Last Branch</h3>
+      <p class="project-category">Game Development / GameJam</p>
+    </a>
+    <p class="project-description">
+      In The Last Branch GameJam project, I worked as the Game Developer responsible for the movement mechanics, flying and parkour systems. I developed smooth player controls and implemented unique abilities, ensuring a dynamic and engaging gameplay experience.
+    </p>
+  </li>
+
+        <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://github.com/thetruth2003/combatsystem" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/axe4.gif" alt="combatsystem" loading="lazy">
+      </figure>
+      <h3 class="project-title">combatsystem</h3>
+      <p class="project-category">Gameplay/Systems</p>
+    </a>
+    <p class="project-description">
+      A fast-paced, souls-like combat sandbox built on ALS. Features directional combos, lock-on targeting, and a modular spell/ability framework — highlighted by a God of War–style recallable axe with cinematic VFX, camera shakes, and responsive hit reactions.
+    </p>
+  </li>
+
+          <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://github.com/thetruth2003/engine" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/engine.gif" alt="engine" loading="lazy">
+      </figure>
+      <h3 class="project-title">Realistic Vehicle & Powertrain Simulation</h3>
+      <p class="project-category">Gameplay/Systems</p>
+    </a>
+    <p class="project-description">
+      A high-fidelity vehicle physics sandbox featuring modular engine, clutch, gearbox, and differential systems. Built for realism with dynamic suspension, tire friction, and telemetry tools — delivering an AAA-style driving and simulation experience.
+    </p>
+  </li>
+
+            <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://github.com/thetruth2003/badpigges" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/badpigges.jpg" alt="combatsystem" loading="lazy">
+      </figure>
+      <h3 class="project-title">BadPigges</h3>
+      <p class="project-category">Gameplay/Systems</p>
+    </a>
+    <p class="project-description">
+     A sandbox prototype showcasing modular physics-driven interactions. Built in Unity, it demonstrates my skills in object snapping, dynamic behavior, and gameplay foundation. Designed as a flexible testbed to iterate game mechanics, not yet a full title.
+    </p>
+  </li>
+
+              <li class="project-item active" data-filter-item data-category="Game">
+    <a href="https://github.com/thetruth2003/badpigges" target="_blank" rel="noopener noreferrer">
+      <figure class="project-img">
+        <div class="project-item-icon-box">
+          <ion-icon name="eye-outline"></ion-icon>
+        </div>
+        <img src="./assets/images/snake.jpg" alt="combatsystem" loading="lazy">
+      </figure>
+      <h3 class="project-title">Snake Game</h3>
+      <p class="project-category">UE5 C++ Prototype</p>
+    </a>
+    <p class="project-description">
+     A minimalistic yet polished prototype of the classic Snake, rebuilt in Unreal Engine 5 using pure C++. Demonstrates fundamental gameplay systems: actor spawning, dynamic segment growth, input handling, collision logic, score tracking and a clean, extensible architecture built for further expansion.
+    </p>
+  </li>
+
+</ul>
+
+
+            <!--
+<li class="project-item  active" data-filter-item data-category="web design">
+  <a href="#">
+
+    <figure class="project-img">
+      <div class="project-item-icon-box">
+        <ion-icon name="eye-outline"></ion-icon>
+      </div>
+
+      <img src="./assets/images/project-3.jpg" alt="fundo" loading="lazy">
+    </figure>
+
+    <h3 class="project-title">Fundo</h3>
+
+    <p class="project-category">Web design</p>
+
+  </a>
+</li>
+
+<li class="project-item  active" data-filter-item data-category="applications">
+  <a href="#">
+
+    <figure class="project-img">
+      <div class="project-item-icon-box">
+        <ion-icon name="eye-outline"></ion-icon>
+      </div>
+
+      <img src="./assets/images/project-4.png" alt="brawlhalla" loading="lazy">
+    </figure>
+
+    <h3 class="project-title">Brawlhalla</h3>
+
+    <p class="project-category">Applications</p>
+
+  </a>
+</li>
+-->
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #BLOG
+      -->
+
+      <article class="blog" data-page="blog">
+
+        <header>
+          <h2 class="h2 article-title">Blog</h2>
+        </header>
+
+        <section class="blog-posts">
+
+          <ul class="blog-posts-list">
+            <li class="blog-post-item">
+              <a href="#">
+
+                <figure class="blog-banner-box">
+                  <img src="./assets/images/blog-1.jpg" alt="Design conferences in 2022" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Design</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Fab 23, 2022</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">Design conferences in 2022</h3>
+
+                  <p class="blog-text">
+                    Veritatis et quasi architecto beatae vitae dicta sunt, explicabo.
+                  </p>
+
+                </div>
+
+              </a>
+            </li>
+
+            <li class="blog-post-item">
+              <a href="#">
+
+                <figure class="blog-banner-box">
+                  <img src="./assets/images/blog-3.jpg" alt="Design digest #80" loading="lazy">
+                </figure>
+
+                <div class="blog-content">
+
+                  <div class="blog-meta">
+                    <p class="blog-category">Design</p>
+
+                    <span class="dot"></span>
+
+                    <time datetime="2022-02-23">Fab 23, 2022</time>
+                  </div>
+
+                  <h3 class="h3 blog-item-title">Design digest #80</h3>
+
+                  <p class="blog-text">
+                    Excepteur sint occaecat cupidatat no proident, quis nostrum exercitationem ullam corporis suscipit.
+                  </p>
+
+                </div>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+
+
+
+      <!--
+        - #CONTACT
+      -->
+
+      <article class="contact" data-page="contact">
+
+        <header>
+          <h2 class="h2 article-title">Contact</h2>
+        </header>
+
+        <section class="contact-form">
+
+          <h3 class="h3 form-title">Contact Form</h3>
+
+          <form action="#" class="form" data-form>
+
+            <div class="input-wrapper">
+              <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
+
+              <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
+            </div>
+
+            <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+            <button type="submit" class="form-btn">
+              <ion-icon name="paper-plane"></ion-icon>
+              <span>Send Message</span>
+            </button>
+
+          </form>
+
+        </section>
+
+      </article>
+
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <!--
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
