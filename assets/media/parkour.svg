@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Multiplayer Parkour technical illustration">
+<defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#435c5b" stroke-width="1" opacity=".32"/></pattern></defs><rect width="1200" height="675" fill="#1c3035"/><rect width="1200" height="675" fill="url(#grid)"/>
+<g font-family="Arial,sans-serif"><text x="65" y="70" fill="#8bc1bb" font-size="18" letter-spacing="5">NETWORKED GAMEPLAY / UNITY</text><text x="65" y="140" fill="#e2ede5" font-size="48" font-weight="bold">Shared world. Local control.</text>
+<g stroke="#8abbb2" stroke-width="3"><path d="M120 480H310V510H120Z" fill="#2f5554"/><path d="M420 380H620V410H420Z" fill="#35625b"/><path d="M760 290H1030V320H760Z" fill="#3c6d60"/></g>
+<path d="M245 420Q330 200 495 320M545 320Q665 110 850 230" fill="none" stroke="#e5c680" stroke-width="4" stroke-dasharray="10 12"/>
+<g fill="#e5c680"><circle cx="230" cy="400" r="18"/><rect x="213" y="424" width="34" height="48" rx="8"/><circle cx="890" cy="212" r="18"/><rect x="873" y="236" width="34" height="48" rx="8"/></g>
+<g font-size="16" fill="#b1cbc2"><text x="140" y="550">OWNER INPUT</text><text x="430" y="450">SERVER STATE</text><text x="810" y="360">CLIENT SYNC</text></g><path d="M430 355H610M430 355L445 346M430 355L445 364M610 355L595 346M610 355L595 364" stroke="#8bc1bb" stroke-width="2"/>
+<text x="65" y="625" fill="#8bc1bb" font-size="14" letter-spacing="2">MOVEMENT · PLATFORMS · KNOCKBACK · RESPAWN</text></g></svg>
