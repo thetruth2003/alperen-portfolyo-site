@@ -1,159 +1,84 @@
 'use strict';
-
-
-
-// element toggle function
-const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
-
-
-
-// sidebar variables
-const sidebar = document.querySelector("[data-sidebar]");
-const sidebarBtn = document.querySelector("[data-sidebar-btn]");
-
-// sidebar toggle functionality for mobile
-sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
-
-
-
-// testimonials variables
-const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
-const modalContainer = document.querySelector("[data-modal-container]");
-const modalCloseBtn = document.querySelector("[data-modal-close-btn]");
-const overlay = document.querySelector("[data-overlay]");
-
-// modal variable
-const modalImg = document.querySelector("[data-modal-img]");
-const modalTitle = document.querySelector("[data-modal-title]");
-const modalText = document.querySelector("[data-modal-text]");
-
-// modal toggle function
-const testimonialsModalFunc = function () {
-  modalContainer.classList.toggle("active");
-  overlay.classList.toggle("active");
+document.documentElement.classList.add('js');
+const menuButton = document.querySelector('.menu-toggle');
+const header = document.querySelector('.site-header');
+function closeMenu() {
+  header?.classList.remove('menu-open');
+  menuButton?.setAttribute('aria-expanded', 'false');
 }
-
-// add click event to all modal items
-for (let i = 0; i < testimonialsItem.length; i++) {
-
-  testimonialsItem[i].addEventListener("click", function () {
-
-    modalImg.src = this.querySelector("[data-testimonials-avatar]").src;
-    modalImg.alt = this.querySelector("[data-testimonials-avatar]").alt;
-    modalTitle.innerHTML = this.querySelector("[data-testimonials-title]").innerHTML;
-    modalText.innerHTML = this.querySelector("[data-testimonials-text]").innerHTML;
-
-    testimonialsModalFunc();
-
-  });
-
-}
-
-// add click event to modal close button
-modalCloseBtn.addEventListener("click", testimonialsModalFunc);
-overlay.addEventListener("click", testimonialsModalFunc);
-
-
-
-// custom select variables
-const select = document.querySelector("[data-select]");
-const selectItems = document.querySelectorAll("[data-select-item]");
-const selectValue = document.querySelector("[data-selecct-value]");
-const filterBtn = document.querySelectorAll("[data-filter-btn]");
-
-select.addEventListener("click", function () { elementToggleFunc(this); });
-
-// add event in all select items
-for (let i = 0; i < selectItems.length; i++) {
-  selectItems[i].addEventListener("click", function () {
-
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
-    elementToggleFunc(select);
-    filterFunc(selectedValue);
-
-  });
-}
-
-// filter variables
-const filterItems = document.querySelectorAll("[data-filter-item]");
-
-const filterFunc = function (selectedValue) {
-
-  for (let i = 0; i < filterItems.length; i++) {
-
-    if (selectedValue === "all") {
-      filterItems[i].classList.add("active");
-    } else if (selectedValue === filterItems[i].dataset.category) {
-      filterItems[i].classList.add("active");
-    } else {
-      filterItems[i].classList.remove("active");
-    }
-
+menuButton?.addEventListener('click', () => {
+  const open = menuButton.getAttribute('aria-expanded') !== 'true';
+  menuButton.setAttribute('aria-expanded', String(open));
+  header.classList.toggle('menu-open', open);
+});
+document.querySelectorAll('.primary-nav a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') {
+    closeMenu();
+    menuButton.focus();
   }
-
-}
-
-// add event in all filter button items for large screen
-let lastClickedBtn = filterBtn[0];
-
-for (let i = 0; i < filterBtn.length; i++) {
-
-  filterBtn[i].addEventListener("click", function () {
-
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
-    filterFunc(selectedValue);
-
-    lastClickedBtn.classList.remove("active");
-    this.classList.add("active");
-    lastClickedBtn = this;
-
+});
+const filterGroup = document.querySelector('.project-filters');
+const cards = [...document.querySelectorAll('[data-project]')];
+if (filterGroup) {
+  filterGroup.hidden = false;
+  filterGroup.addEventListener('click', event => {
+    const button = event.target.closest('[data-filter]');
+    if (!button) return;
+    const category = button.dataset.filter.toLowerCase();
+    filterGroup.querySelectorAll('button').forEach(item => {
+      item.classList.toggle('active', item === button);
+      item.setAttribute('aria-pressed', String(item === button));
+    });
+    cards.forEach(card => { card.hidden = category !== 'all' && card.dataset.category.toLowerCase() !== category; });
+    document.querySelector('[data-count]').textContent = String(cards.filter(card => !card.hidden).length);
   });
-
 }
-
-
-
-// contact form variables
-const form = document.querySelector("[data-form]");
-const formInputs = document.querySelectorAll("[data-form-input]");
-const formBtn = document.querySelector("[data-form-btn]");
-
-// add event to all form input field
-for (let i = 0; i < formInputs.length; i++) {
-  formInputs[i].addEventListener("input", function () {
-
-    // check form validation
-    if (form.checkValidity()) {
-      formBtn.removeAttribute("disabled");
-    } else {
-      formBtn.setAttribute("disabled", "");
+document.querySelectorAll('[data-animation]').forEach(button => {
+  const frame = button.closest('.hero-screen, .detail-media');
+  const image = frame.querySelector('img');
+  const initialLabel = button.innerHTML;
+  const stop = () => {
+    image.src = button.dataset.poster;
+    button.setAttribute('aria-pressed', 'false');
+    button.innerHTML = initialLabel;
+  };
+  button.addEventListener('click', () => {
+    if (button.getAttribute('aria-pressed') === 'true') return stop();
+    image.src = button.dataset.animation;
+    button.setAttribute('aria-pressed', 'true');
+    button.innerHTML = '<span aria-hidden="true">■</span> Stop gameplay';
+  });
+  image.addEventListener('error', () => {
+    if (button.getAttribute('aria-pressed') === 'true') {
+      stop();
+      button.innerHTML = 'Clip unavailable — try again';
     }
-
   });
-}
-
-
-
-// page navigation variables
-const navigationLinks = document.querySelectorAll("[data-nav-link]");
-const pages = document.querySelectorAll("[data-page]");
-
-// add event to all nav link
-for (let i = 0; i < navigationLinks.length; i++) {
-  navigationLinks[i].addEventListener("click", function () {
-
-    for (let j = 0; j < pages.length; j++) {
-      if (this.textContent.trim().toLowerCase() === pages[j].dataset.page) {
-        pages[j].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      } else {
-        pages[j].classList.remove("active");
-        navigationLinks[j].classList.remove("active");
-      }
-    }
-
-  });
-}
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+});
+document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+const contactForm = document.querySelector('[data-contact-form]');
+contactForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const status = contactForm.querySelector('.form-status');
+  const submit = contactForm.querySelector('[type="submit"]');
+  if (['localhost','127.0.0.1','[::1]'].includes(location.hostname)) {
+    status.textContent = 'This local preview cannot deliver messages. Please use the email link.';
+    return;
+  }
+  submit.disabled = true;
+  status.textContent = 'Sending your message…';
+  try {
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
+      body: new URLSearchParams(new FormData(contactForm)).toString()
+    });
+    if (!response.ok) throw new Error('Submission failed');
+    window.location.assign('/thank-you.html');
+  } catch {
+    status.textContent = 'Your message could not be sent. Please try again or contact me using the email link.';
+    submit.disabled = false;
+  }
+});
