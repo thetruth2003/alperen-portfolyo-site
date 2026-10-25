@@ -1,5 +1,7 @@
 # Content and asset sources
 
+Homepage card artwork now uses the generated illustrative covers documented in [COVER_ART.md](COVER_ART.md). The media provenance in the table below describes the original assets retained on project detail pages.
+
 Reviewed 22 October 2026. Copy is stronger and more specific than the old template, while staying within public repository evidence and the owner's existing portfolio statements.
 
 | Project | Evidence | Media |
