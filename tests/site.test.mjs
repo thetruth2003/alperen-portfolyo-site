@@ -56,11 +56,20 @@ test('Legacy wrong/private links and unverifiable studio claims are absent',()=>
   for(const bad of ['github.com/thetruth2003/combatsystem','Studios We','Game Programmer 90%','Richard hanrick'])assert.ok(!home.includes(bad));
   assert.equal(projects.find(p=>p.slug==='snake').repo,'https://github.com/thetruth2003/snake_game');
 });
-test('Initial project images remain small and contain text alternatives',async()=>{
+test('Illustrated covers stay lightweight while project pages preserve original media',async()=>{
   for(const p of projects){
     assert.ok(p.imageAlt.length>10);
+    assert.ok(p.coverAlt.length>10);
+    assert.equal(p.cover,`covers/${p.slug}.webp`);
+    assert.ok(home.includes(`src="/assets/media/${p.cover}" alt=""`),'Card artwork is decorative beside the accessible project title');
+    const detail=await readFile(path.join(dist,'projects',p.slug+'.html'),'utf8');
+    assert.ok(detail.includes(`src="/assets/media/${p.image}"`),`${p.slug} must retain its original project media`);
+    if(p.animation)assert.ok(!home.includes(`src="/assets/media/${p.animation}"`),'Animation only loads on demand');
     const image=await stat(path.join(dist,'assets/media',p.image));
     assert.ok(image.size<250000,`${p.image} exceeds the poster budget`);
   }
-  assert.ok(!home.includes('src="/assets/media/combat-demo.webp"'));
+  const initialImages=new Set([...home.matchAll(/<img\b[^>]*\bsrc="(\/assets\/[^\"]+)"/g)].map(match=>match[1]));
+  let initialBytes=0;
+  for(const src of initialImages)initialBytes+=(await stat(path.join(dist,src.slice(1)))).size;
+  assert.ok(initialBytes<=650000,`Homepage images use ${initialBytes} bytes; budget is 650000 bytes`);
 });

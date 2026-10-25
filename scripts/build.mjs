@@ -12,14 +12,14 @@ const arrow = '<span aria-hidden="true">↗</span>';
 const external = (url, label, cls='text-link') => `<a class="${cls}" href="${escape(url)}" target="_blank" rel="noopener noreferrer">${escape(label)} ${arrow}<span class="sr-only"> (opens in a new tab)</span></a>`;
 const tags = values => `<ul class="tags" aria-label="Technologies">${values.map(t=>`<li>${escape(t)}</li>`).join('')}</ul>`;
 
-function head(title, description, url='/', image='/assets/media/combat.webp') {
+function head(title, description, url='/', image='/assets/media/combat.webp', imageAlt='Gameplay capture from the Advanced Combat System prototype') {
   return `<!doctype html><html lang="en"><head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#121414"><title>${escape(title)}</title>
   <meta name="description" content="${escape(description)}"><link rel="canonical" href="${origin}${url}">
   <meta property="og:type" content="website"><meta property="og:site_name" content="Alperen Baltacı">
   <meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(description)}">
-  <meta property="og:url" content="${origin}${url}"><meta property="og:image" content="${origin}${image}">
+  <meta property="og:url" content="${origin}${url}"><meta property="og:image" content="${origin}${image}"><meta property="og:image:alt" content="${escape(imageAlt)}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +48,7 @@ function media(p, detail=false) {
 }
 function card(p, i) {
  return `<article class="project-card${p.featured?' featured':''}" data-project data-category="${p.category}">
- <a class="project-card-link" href="/projects/${p.slug}.html" aria-label="Explore ${escape(p.title)}">${media(p)}
+ <a class="project-card-link" href="/projects/${p.slug}.html" aria-label="Explore ${escape(p.title)}"><div class="project-media project-cover" aria-hidden="true"><img src="/assets/media/${escape(p.cover)}" alt="" width="1280" height="800" loading="lazy" decoding="async"></div>
  <div class="card-content"><div class="card-topline"><span>${escape(p.type)}</span><span class="project-number">${String(i+1).padStart(2,'0')}</span></div><div class="card-title-row"><h3>${escape(p.title)}</h3><span class="card-arrow" aria-hidden="true">↗</span></div><p>${escape(p.summary)}</p>${tags(p.tags)}</div></a></article>`;
 }
 const homeBody = await readFile(path.join(root,'src/index.html'),'utf8');
@@ -59,7 +59,7 @@ const home = head('Alperen Baltacı — Gameplay & Systems Programmer', 'Gamepla
 function projectPage(p,index) {
  const next = projects[(index+1)%projects.length];
  const links = `${p.repo?external(p.repo,'View source','button button-primary'):''}${p.demo?external(p.demo,'Visit game page','button button-primary'):''}${p.related?external(p.related.url,p.related.label,'button button-ghost'):''}`;
- return head(`${p.title} — Alperen Baltacı`,p.summary,`/projects/${p.slug}.html`, `/assets/media/${p.image.endsWith('.svg')?'combat.webp':p.image}`)+header()+`
+ return head(`${p.title} — Alperen Baltacı`,p.summary,`/projects/${p.slug}.html`, `/assets/media/${p.cover}`,p.coverAlt)+header()+`
  <main id="main" class="project-page container"><a class="back-link" href="/#work">← All projects</a>
  <div class="project-intro"><p class="eyebrow">${escape(p.type)}</p><h1>${escape(p.title)}</h1><p class="project-subtitle">${escape(p.subtitle)}</p><div class="project-intro-bottom">${tags(p.tags)}<div class="project-links">${links}</div></div></div>
  <figure class="detail-media">${media(p,true)}${p.animation?`<button class="play-button" data-animation="/assets/media/${p.animation}" data-poster="/assets/media/${p.image}" aria-pressed="false"><span aria-hidden="true">▶</span> Play gameplay clip</button>`:''}<figcaption>${p.illustration?'System illustration based on the project’s implemented mechanics.':p.assetCaption?escape(p.assetCaption):p.gallery?'Actual Android demo. Scroll to explore; open any screen to see it at full size.':p.animation?'Original gameplay capture. Press Play to load the animated clip.':'Original project imagery.'}</figcaption></figure>

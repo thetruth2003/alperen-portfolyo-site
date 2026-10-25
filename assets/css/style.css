@@ -481,6 +481,13 @@ a,button{
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:40px 25px
 }
+.cover-context{
+  max-width:720px;
+  margin:0 0 25px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.7
+}
 .project-card{
   min-width:0
 }
@@ -504,6 +511,10 @@ a,button{
   height:100%;
   object-fit:cover;
   transition:transform .35s
+}
+.project-media.project-cover{
+  aspect-ratio:16/10;
+  background:#161b18
 }
 .project-card:hover .project-media>img{
   transform:scale(1.035)

@@ -1,6 +1,8 @@
 [
   {
     "slug": "combat-system",
+    "cover": "covers/combat-system.webp",
+    "coverAlt": "Illustrated cover for Advanced Combat System",
     "title": "Advanced Combat System",
     "subtitle": "Every hit should feel intentional.",
     "category": "unreal",
@@ -21,6 +23,8 @@
   },
   {
     "slug": "modular-vehicle-builder",
+    "cover": "covers/modular-vehicle-builder.webp",
+    "coverAlt": "Illustrated cover for Modular Vehicle Builder",
     "title": "Modular Vehicle Builder",
     "subtitle": "Build it. Break it. Make it fly.",
     "category": "unity",
@@ -42,6 +46,8 @@
   },
   {
     "slug": "tenlivion-ev",
+    "cover": "covers/tenlivion-ev.webp",
+    "coverAlt": "Illustrated cover for TENLIVION EV",
     "title": "TENLIVION EV",
     "subtitle": "A clearer path from station to session.",
     "category": "applications",
@@ -62,6 +68,8 @@
   },
   {
     "slug": "engine-powertrain",
+    "cover": "covers/engine-powertrain.webp",
+    "coverAlt": "Illustrated cover for Engine and Powertrain",
     "title": "Engine & Powertrain",
     "subtitle": "Make the machinery visible.",
     "category": "unity",
@@ -81,6 +89,8 @@
   },
   {
     "slug": "multiplayer-parkour",
+    "cover": "covers/multiplayer-parkour.webp",
+    "coverAlt": "Illustrated cover for Multiplayer Parkour",
     "title": "Multiplayer Parkour",
     "subtitle": "One obstacle course. Shared state.",
     "category": "unity",
@@ -94,12 +104,14 @@
     "contributions": ["Owner-controlled player movement and jumping.", "Server-assigned spawn positions and multiplayer respawning.", "Server-updated moving platforms with client synchronization.", "Collision-driven knockback and a host/client entry interface."],
     "challenge": "Separate player-owned input from shared world behavior so every participant can interact with the same moving obstacles.",
     "approach": "Player ownership gates movement input, while platform state is updated on the server. RPC-based messages coordinate platform updates, knockback, and respawn events.",
-    "scope": "A networked gameplay study using Unity Netcode for GameObjects. The cover illustrates the implemented ownership and synchronization model.",
+    "scope": "A networked gameplay study using Unity Netcode for GameObjects. The technical diagram above illustrates the implemented ownership and synchronization model.",
     "repo": "https://github.com/thetruth2003/Mutliplayer_Parkour",
     "source": "https://github.com/thetruth2003/Mutliplayer_Parkour/blob/main/Assets/Scripts/Obstacles/MovingPlatform.cs"
   },
   {
     "slug": "factory-check",
+    "cover": "covers/factory-check.webp",
+    "coverAlt": "Illustrated cover for Factory Check",
     "title": "Factory Check",
     "subtitle": "Keep operational context connected.",
     "category": "applications",
@@ -119,6 +131,8 @@
   },
   {
     "slug": "dark-descent",
+    "cover": "covers/dark-descent.webp",
+    "coverAlt": "Illustrated cover for Dark Descent",
     "title": "Dark Descent",
     "subtitle": "Gameplay in service of atmosphere.",
     "category": "unity",
@@ -137,6 +151,8 @@
   },
   {
     "slug": "the-last-branch",
+    "cover": "covers/the-last-branch.webp",
+    "coverAlt": "Illustrated cover for The Last Branch",
     "title": "The Last Branch",
     "subtitle": "Movement is the main character.",
     "category": "unity",
@@ -155,6 +171,8 @@
   },
   {
     "slug": "vampire",
+    "cover": "covers/vampire.webp",
+    "coverAlt": "Illustrated cover for Vampire",
     "title": "Vampire",
     "subtitle": "A compact combat and progression loop.",
     "category": "unity",
@@ -168,12 +186,14 @@
     "contributions": ["Movement, mouse-directed weapon rotation, and an orbiting weapon.", "Health, experience, levels, and upgrade choices.", "Escalating melee, archer, and boss spawning.", "Ammunition UI, pause/resume, retry, and game-over states."],
     "challenge": "Make combat, enemy escalation, and progression cooperate within a small, playable prototype.",
     "approach": "Player and spawner scripts connect level state to enemy variety and upgrade choices. Menu and retry controls close the loop around the core combat experiment.",
-    "scope": "A compact gameplay prototype exploring combat and progression. The cover is a system illustration of the implemented gameplay loop.",
+    "scope": "A compact gameplay prototype exploring combat and progression. The technical diagram above illustrates the implemented gameplay loop.",
     "repo": "https://github.com/thetruth2003/Vampire",
     "source": "https://github.com/thetruth2003/Vampire/blob/main/Assets/script/player.cs"
   },
   {
     "slug": "tower-defense",
+    "cover": "covers/tower-defense.webp",
+    "coverAlt": "Illustrated cover for Tower Defence",
     "title": "Tower Defence",
     "subtitle": "Build the loop. Hold the line.",
     "category": "unity",
@@ -192,6 +212,8 @@
   },
   {
     "slug": "aponun-koyu",
+    "cover": "covers/aponun-koyu.webp",
+    "coverAlt": "Illustrated cover for Apo’nun Köyü",
     "title": "Apo’nun Köyü",
     "subtitle": "An exploration from concept to prototype.",
     "category": "unity",
@@ -210,6 +232,8 @@
   },
   {
     "slug": "snake",
+    "cover": "covers/snake.webp",
+    "coverAlt": "Illustrated cover for Snake in Unreal",
     "title": "Snake in Unreal",
     "subtitle": "Small game. Explicit fundamentals.",
     "category": "unreal",
