@@ -1,10 +1,14 @@
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {caseStudy, resumeExperience} from './render-details.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'dist');
+const assetVersion = async file => createHash('sha256').update(await readFile(path.join(root, file))).digest('hex').slice(0, 12);
+const cssVersion = await assetVersion('assets/css/style.css');
+const jsVersion = await assetVersion('assets/js/script.js');
 if (path.dirname(out) !== root || path.basename(out) !== 'dist') throw new Error('Unsafe output path');
 const projects = JSON.parse(await readFile(path.join(root, 'data/projects.json'), 'utf8'));
 const details = JSON.parse(await readFile(path.join(root,'data/project-details.json'),'utf8'));
@@ -28,7 +32,7 @@ function head(title, description, url='/', image='/assets/media/combat.webp', im
   <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css"><script src="/assets/js/script.js" defer></script>
+  <link rel="stylesheet" href="/assets/css/style.css?v=${cssVersion}"><script src="/assets/js/script.js?v=${jsVersion}" defer></script>
   </head><body><a href="#main" class="skip-link">Skip to content</a>`;
 }
 function header(home=false) {

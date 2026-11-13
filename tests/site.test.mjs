@@ -15,7 +15,8 @@ test('Every local link, image, script and stylesheet resolves in the deploy outp
     for(const match of html.matchAll(/(?:href|src|data-animation|data-poster)="([^"]+)"/g)){
       const url=match[1];
       if(!url.startsWith('/')&&!url.startsWith('#'))continue;
-      const [pathname,fragment]=url.split('#');
+      const [resource,fragment]=url.split('#');
+      const pathname=resource.split('?')[0];
       const target=pathname?(pathname==='/'?'index.html':pathname.slice(1)):page;
       assert.ok((await stat(path.join(dist,target))).isFile(),`${page}: ${url}`);
       if(fragment){
