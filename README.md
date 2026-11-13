@@ -17,7 +17,10 @@ Preview: http://localhost:4173. Rebuild and reload after source changes. `PORT` 
 ## Edit content
 
 - `src/index.html`: homepage content and structure.
-- `data/projects.json`: all 12 project summaries, technical breakdowns, links, and media references.
+- `data/projects.json`: all 12 project summaries, links, and media references.
+- `data/project-details.json`: full English case studies, chapters, original media, and source links.
+- `data/resume.json`: professional experience, education, skills, and languages from the supplied CV.
+- `scripts/render-details.mjs`: accessible chapter navigation, technical content, and experience timeline.
 - `scripts/build.mjs`: shared layouts, project pages, printable résumé, metadata, sitemap, and deploy output.
 - `assets/css/style.css`: responsive visual system and print layout.
 - `assets/js/script.js`: filters, mobile navigation, click-to-play media, and form feedback.
@@ -25,7 +28,7 @@ Preview: http://localhost:4173. Rebuild and reload after source changes. `PORT` 
 
 `dist/` is generated and ignored. Netlify runs `npm run build` and publishes `dist/`, as specified in `netlify.toml`. The asset preparation script is optional maintenance tooling, not part of deployment; it requires Python and Pillow.
 
-The résumé is a project-based profile using existing public information. Its **Print / Save PDF** button opens the browser print dialog with a dedicated A4 layout.
+The résumé includes professional and collaborative experience from the supplied CV. **Download CV** serves the prepared PDF; **Print résumé** opens the browser print dialog with a dedicated A4 layout. Project chapters are linked from a sticky desktop contents menu and a collapsible mobile menu. Development clips load only when Play is selected.
 
 ## Deployment and contact form
 

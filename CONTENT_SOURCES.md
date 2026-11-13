@@ -26,3 +26,13 @@ Reviewed 22 October 2026. Copy is stronger and more specific than the old templa
 - Kept contact identity, Warsaw location, and education from the owner's existing public portfolio. Current education status, exact dates at Futuregames, employment history, and formal degree titles should be supplied by the owner before adding a full employment CV.
 - No commercial deployment, user count, performance improvement, release, or affiliation was inferred from repository ownership.
 - `scripts/prepare-media.py` records exact download sources for the additional binary assets. The GitHub connector cannot download binary image resources, so the script downloads public, identified assets directly.
+
+## Detailed case studies and résumé update — 13 November 2026
+
+All twelve case studies now have structured chapters in data/project-details.json, with project-specific source links. Additional source inspection covers combat defense and trace notifications, Snake BFS/path generation/local game modes, tower targeting and spawning, charging operation recovery, and factory shift/downtime workflows.
+
+Professional experience, education, and language levels come from the owner-supplied Alperen.Baltaci.CV.pdf. Collaborative Futuregames projects are labelled separately from studio employment. The downloadable PDF is the previously prepared CV. Stale release targets and the ambiguous GPA were not carried over.
+
+The owner explicitly confirmed that The Last Branch is the linked Unreal Engine project and their contribution was parkour and gameplay mechanics. Its category, technology, and team-project description were corrected. Dark Descent is described as a dark-fantasy action game using its official page.
+
+Apo’s village source is thetruth2003/Aponun_koyu. Its detailed English README and source inform the 16 chapters. Six original GIF recordings are loaded only on request; ten local WebP previews come from its Images directory. No AI artwork is presented as a gameplay screenshot.
