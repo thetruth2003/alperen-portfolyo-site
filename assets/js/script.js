@@ -35,7 +35,7 @@ if (filterGroup) {
   });
 }
 document.querySelectorAll('[data-animation]').forEach(button => {
-  const frame = button.closest('.hero-screen, .detail-media');
+  const frame = button.closest('.hero-screen, .detail-media, .case-media');
   const image = frame.querySelector('img');
   const initialLabel = button.innerHTML;
   const stop = () => {
@@ -82,3 +82,9 @@ contactForm?.addEventListener('submit', async event => {
     submit.disabled = false;
   }
 });
+
+const chapterMenu = document.querySelector('.case-nav');
+if(chapterMenu && matchMedia('(max-width: 800px)').matches) chapterMenu.open = false;
+chapterMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+  if(matchMedia('(max-width: 800px)').matches) chapterMenu.open = false;
+}));

@@ -1,0 +1,1594 @@
+{
+  "combat-system": {
+    "intro": [
+      "Advanced Combat System is a third-person C++ combat extension built on ALS Community. My work connects directional melee, defensive actions, weapon handling, target focus, and a throwable axe into a shared combat flow. The emphasis is on the relationship between input, animation, contact, and the response the player sees.",
+      "The project extends an existing locomotion foundation with custom combat responsibilities. ALS Community supplies that foundation; the combat component, weapon interaction, and throw-and-recall behavior are the focus of this work."
+    ],
+    "sections": [
+      {
+        "id": "combat-state",
+        "title": "Combat state and input coordination",
+        "paragraphs": [
+          "The combat component tracks whether the character is attacking, blocking, dodging, aiming, or handling a thrown axe. These conditions matter because an input means something different depending on the action already underway and the selected weapon. ActionInput, CanAttack, queued input, and state-reset methods form the boundary between player commands and combat behavior.",
+          "The component is exposed to Unreal's editing and Blueprint environment through properties and callable functions. Montage references and combat configuration can be assigned alongside C++ behavior, so tuning an attack does not require embedding every presentation choice in the input code."
+        ]
+      },
+      {
+        "id": "directional-melee",
+        "title": "Directional melee and animation-driven contact",
+        "paragraphs": [
+          "Melee attacks are associated with weapon-specific animation sets, including fist, sword, and axe montages. Directional information and attack types support different motions and reactions. The result is a combat structure where a strike has a selected action, an animation, an active contact period, and an outcome.",
+          "AttackTrace and IsAttackingState animation notifications connect the visual action to the combat component. The trace is activated during the relevant part of the motion rather than treating an entire animation as a continuous collision. This gives the implementation a clear place to coordinate hit detection with what the player sees."
+        ]
+      },
+      {
+        "id": "defense",
+        "title": "Blocking, parrying, and directional dodges",
+        "paragraphs": [
+          "The combat layer includes block state, a parry timer, a parry response montage, and directional dodge handling. Defense therefore shares the same action context as attacking. A player can respond to a threat through timing and movement as well as choosing a weapon.",
+          "Dodge direction is derived from forward/right movement information and mapped to directional animation behavior. Keeping these inputs and states explicit makes the interaction inspectable: the programmer can distinguish a defensive transition from a normal locomotion update or a new attack request."
+        ]
+      },
+      {
+        "id": "axe",
+        "title": "The throwable and recallable axe",
+        "paragraphs": [
+          "The axe is implemented as a dedicated actor with its own behavior, while the combat component retains the player's aiming and thrown-weapon state. That division allows the weapon to leave the character, interact with the world, and return without turning the general combat component into the entire projectile simulation.",
+          "The core interaction is throwing at an enemy or object and recalling the axe dynamically. Its return is part of the combat loop, not merely an inventory operation. Equipping, attachment, animation, and the player's available actions must remain coordinated while the weapon moves between the hand and the world."
+        ]
+      },
+      {
+        "id": "focus",
+        "title": "Target focus and facing",
+        "paragraphs": [
+          "Targeting uses a focused-enemy reference alongside candidate and hit-target collections. Finding an enemy, selecting focus, rotating toward a target, and updating facing are separate operations in the combat interface. This lets the action system refer to a consistent target during an attack or focus interaction.",
+          "Rotation helpers and timeline-based turning connect target selection to character presentation. A clear facing relationship makes directional attacks easier to follow and keeps focus behavior connected to the existing character and camera setup."
+        ]
+      },
+      {
+        "id": "feedback",
+        "title": "Hit response, presentation, and integration",
+        "paragraphs": [
+          "A hit is communicated through reaction montages, camera feedback, particles, and health presentation. The component stores hit-reaction configuration and references the character's animation, movement, mesh, weapons, and widgets. These connections make the outcome readable beyond the fact that a collision occurred.",
+          "The development footage demonstrates the mechanics in an Unreal test environment. The engineering contribution is the coordination of combat state, weapon behavior, animation-driven contact, and presentation on top of ALS Community. Further production work would involve broader encounter testing and content integration; this showcase does not claim a finished commercial combat package."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Combat README and original clips",
+        "url": "https://github.com/thetruth2003/Advanced-combat-system--Based-on-ALS-Community-/blob/main/README.md"
+      },
+      {
+        "label": "Combat component interface",
+        "url": "https://github.com/thetruth2003/Advanced-combat-system--Based-on-ALS-Community-/blob/main/Source/ALSV4_CPP/Public/CPC_Combat.h"
+      },
+      {
+        "label": "Axe implementation",
+        "url": "https://github.com/thetruth2003/Advanced-combat-system--Based-on-ALS-Community-/blob/main/Source/ALSV4_CPP/Private/LeviathanAxe.cpp"
+      }
+    ],
+    "contributions": [
+      "C++ combat state, directional melee, animation-driven attack traces, and weapon switching.",
+      "Blocking, parry handling, directional dodge behavior, and target focus.",
+      "Throwable and recallable axe integration with character actions and weapon attachment.",
+      "Hit reactions, camera feedback, particles, and health presentation."
+    ]
+  },
+  "modular-vehicle-builder": {
+    "intro": [
+      "Modular Vehicle Builder is a Unity physics sandbox in which construction changes how a vehicle behaves. Players grab parts, align connection points, assemble a structure, and test it with wheels or propulsion modules. The same build can be revised after driving, making iteration part of the game.",
+      "My contribution brings together part placement, rigidbody connections, runtime mass distribution, driving, and flight experiments. Rather than authoring a fixed vehicle for one scenario, the project explores how reusable physical components can form different player-made machines."
+    ],
+    "sections": [
+      {
+        "id": "construction",
+        "title": "Grabbing, placement, and a readable build loop",
+        "paragraphs": [
+          "ObjectGrabber uses mouse-based interaction to pick up and place parts, while GridCreator provides a grid and occupancy model for construction. Placement and connection are related but separate responsibilities: a part needs a position in the build space before its attachment points can join it to the vehicle.",
+          "The intended loop is build, test, and iterate. A player can assemble a chassis, add wheels or propulsion, observe the result, and reconsider the arrangement. That feedback makes physical behavior a design constraint rather than a hidden calculation."
+        ]
+      },
+      {
+        "id": "attachments",
+        "title": "Attach points and physical connections",
+        "paragraphs": [
+          "AttachPoint represents a precise connection between compatible parts. FixedJoint connections allow attached bodies to participate in a physical assembly. The Cube component keeps track of connected rigidbodies, providing a way to reason about the vehicle as a collection rather than unrelated scene objects.",
+          "The challenge is maintaining agreement between visible placement and physical connection. A snapped part needs to join at the intended point, preserve the assembly's structure, and remain consistent when force is applied. Crashes and uneven terrain are useful stress cases for these relationships."
+        ]
+      },
+      {
+        "id": "mass",
+        "title": "Mass distribution changes with construction",
+        "paragraphs": [
+          "DynamicCenterOfMass recalculates the assembly's center of mass at runtime. This is important in a construction game because the player chooses where the heavy and light pieces sit. A vehicle's balance should respond to that arrangement instead of inheriting a fixed center from a prefab.",
+          "The system connects structural changes to physical feedback. Adding a module away from the existing center influences how the build balances, so the position of a wheel, body, or propulsion element becomes a meaningful construction decision."
+        ]
+      },
+      {
+        "id": "driving",
+        "title": "WheelCollider driving and wheel presentation",
+        "paragraphs": [
+          "FrontWheel and RearWheel connect WheelCollider behavior to the visible wheel meshes. CarController supplies acceleration, steering, and braking input. Separating wheel behavior from general construction lets the same placement system work with parts that have very different responsibilities.",
+          "The documented controls include forward/reverse, left/right steering, and braking. Driving then becomes a direct test of the assembly: the player can see whether the arrangement stays balanced, turns as intended, and transfers force through its connected parts."
+        ]
+      },
+      {
+        "id": "flight",
+        "title": "Propulsion and flight experiments",
+        "paragraphs": [
+          "The helicopter propeller module introduces lift and thrust, extending the sandbox beyond ground vehicles. It can be toggled when attached, allowing a build to be tested with and without that source of force. The wider project also explores aerodynamic surfaces and different flight-module arrangements.",
+          "This changes the design problem: a useful ground layout does not automatically become a balanced flying vehicle. Propulsion must act on the current assembly, and the position of mass and force becomes central to understanding its motion. The project uses these interactions as a basis for experimentation."
+        ]
+      },
+      {
+        "id": "architecture",
+        "title": "Small components, connected physical behavior",
+        "paragraphs": [
+          "The code divides responsibilities among grabbing, grid placement, attachments, assembly tracking, center-of-mass calculation, wheel control, and propulsion. That structure allows the behavior of an individual module to stay focused while its physical effects contribute to the whole vehicle.",
+          "The original README documents the core sandbox and its early limitations, including simplified detach rules. Save/load, stronger joint-break cleanup, additional module types, and authoring tools remain useful directions for the construction workflow. The project is presented as an evolving physics sandbox, with source and gameplay captures available for inspection."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Sandbox README and gameplay",
+        "url": "https://github.com/thetruth2003/goodboys"
+      },
+      {
+        "label": "Earlier construction experiments",
+        "url": "https://github.com/thetruth2003/badpigges"
+      }
+    ]
+  },
+  "engine-powertrain": {
+    "intro": [
+      "Engine & Powertrain is an interactive Unity simulation connecting a four-stroke engine to a visible drivetrain. Throttle, fuel, engine temperature, gears, shaft rotation, differential output, and braking are represented by cooperating C# components. The goal is to make relationships between mechanical systems observable through interaction.",
+      "My work focuses on the simulation logic and its presentation: an input changes engine behavior, mechanical outputs propagate through the drivetrain, and thermal or braking feedback explains what is happening. This is a gameplay and visualization project rather than a validated automotive engineering model."
+    ],
+    "sections": [
+      {
+        "id": "four-stroke",
+        "title": "Four-stroke cycles and per-piston state",
+        "paragraphs": [
+          "The Engine component explicitly models intake, compression, power, and exhaust phases. Each piston stores its current phase, motion direction, stage, and mixture state, with configurable stroke and frequency. Phase-specific objects can respond when the piston reaches the relevant part of its cycle.",
+          "The phase transition is also a presentation event. Step targets can activate visuals, particles, audio, or message-driven behavior. This gives the simulation a way to connect an internal state change to an observable mechanical action instead of relying only on a numerical RPM value."
+        ]
+      },
+      {
+        "id": "fuel-throttle",
+        "title": "Throttle response and fuel consumption",
+        "paragraphs": [
+          "Throttle moves the engine between idle and maximum shared frequency, with smoothing for the change in response. RPM is derived from the running frequency. The fuel tank has a capacity and current quantity, and consumption occurs on ignition with scaling based on throttle and engine speed.",
+          "Running out of fuel affects whether the engine continues operating. This connects the resource state to the motion and cycle simulation. Fuel display and engine HUD components expose the changing values so the interaction can be inspected while the system is running."
+        ]
+      },
+      {
+        "id": "temperature",
+        "title": "Heat, cooling, and overheat protection",
+        "paragraphs": [
+          "Power events contribute heat, while cooling reduces temperature over time. The engine contains separate overheat and restart thresholds: it cuts operation after reaching the upper threshold and remains overheated until it cools below the lower threshold.",
+          "That separation prevents the operating state from switching repeatedly around one boundary. CoolingSystem is a distinct component in the project, and engine temperature also participates in presentation intensity. Thermal behavior becomes another input into the machine's state rather than a disconnected visual effect."
+        ]
+      },
+      {
+        "id": "gearbox",
+        "title": "Sequential gears and signed shaft speed",
+        "paragraphs": [
+          "SimpleGearbox reads signed flywheel RPM from a rigidbody or transform and distributes speed to input, middle, and output shafts. Five forward gears use configurable multipliers; neutral produces zero output, while reverse changes the sign. Shafts can be presented through transform rotation or rigidbody angular velocity.",
+          "Sequential shifting includes a timed torque-cut factor that decreases and reconnects during a shift. The controller also exposes a manual-input RPM option for inspection. These choices separate the source of engine motion, the selected gear relationship, and the visual rotation of each shaft."
+        ]
+      },
+      {
+        "id": "differential",
+        "title": "From drivetrain output to wheels",
+        "paragraphs": [
+          "The project includes differential splitting and shaft-to-wheel components to carry the mechanical chain beyond the gearbox. These scripts form the transition between rotational output and the wheel representation. Keeping that boundary explicit makes it easier to examine which part of the chain is responsible for a behavior.",
+          "The visible drivetrain is valuable for interaction and debugging: shaft direction, selected gear, wheel behavior, and engine response can be compared in the same scene. Configuration and visualization are used to explain the relationship, without claiming measured parity with a real vehicle."
+        ]
+      },
+      {
+        "id": "braking",
+        "title": "Brake distribution and visible thermal feedback",
+        "paragraphs": [
+          "BrakeSystem supports front-only, rear-only, and all-wheel modes, a configurable front/rear bias, and additional rear handbrake force. A speed-to-pressure curve adjusts the applied braking input. The implementation applies torque opposing wheel rotation.",
+          "Each wheel's brake heat is tracked from braking strength and RPM, then cooled when conditions allow. Disc colors and emission communicate heat, while brake lights respond to braking input. This ties a continuous mechanical value to visible feedback, making sustained braking different from a single instantaneous stop command."
+        ]
+      },
+      {
+        "id": "boundaries",
+        "title": "Component boundaries and the complete interaction",
+        "paragraphs": [
+          "Engine, gearbox, differential, cooling, wheel, and brake scripts each own a different part of the simulation. Their connection is what makes the project useful: changing throttle or gear affects a sequence of behaviors that can be observed through motion, UI, and effects.",
+          "The source includes inspection HUDs and multiple vehicle-control experiments. The showcase concentrates on the implemented cycle, fuel, thermal, transmission, and braking systems. Further validation and tuning would be necessary for engineering use; the current contribution is an interactive mechanical simulation built for exploration and gameplay development."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Engine project source",
+        "url": "https://github.com/thetruth2003/engine"
+      },
+      {
+        "label": "Engine cycle and thermal state",
+        "url": "https://github.com/thetruth2003/engine/blob/main/Assets/script/Engine.cs"
+      },
+      {
+        "label": "Gearbox implementation",
+        "url": "https://github.com/thetruth2003/engine/blob/main/Assets/script/SimpleGearbox.cs"
+      },
+      {
+        "label": "Brake and heat implementation",
+        "url": "https://github.com/thetruth2003/engine/blob/main/Assets/script/car/BrakeSystem.cs"
+      }
+    ]
+  },
+  "multiplayer-parkour": {
+    "intro": [
+      "Multiplayer Parkour is a Unity Netcode for GameObjects project exploring how player-controlled movement interacts with a shared obstacle course. It includes local ownership checks, jumping, server-selected spawn points, synchronized moving platforms, collision knockback, and respawning.",
+      "My focus is the boundary between what a player controls and what the shared world owns. Movement needs to respond to the local player, while obstacles and lifecycle events need a consistent interpretation across the session."
+    ],
+    "sections": [
+      {
+        "id": "ownership",
+        "title": "Ownership gates player input",
+        "paragraphs": [
+          "PlayerMovement is a NetworkBehaviour. Its update path returns immediately when the object is not owned by the current client, so another player's avatar does not consume the same keyboard input. Movement reads horizontal and vertical axes and translates the player in world space.",
+          "This is an explicit owner-controlled movement model. It demonstrates how to separate input responsibility among networked objects; it is not described as a server-validated competitive movement system or an implementation of prediction and reconciliation."
+        ]
+      },
+      {
+        "id": "jumping",
+        "title": "Ground checks and jump response",
+        "paragraphs": [
+          "Jumping uses a downward ground-layer raycast and applies an impulse to the player's Rigidbody when the player is grounded. Speed and jump force have their own configuration and setter methods, allowing those parts of the movement behavior to be adjusted independently.",
+          "Movement and jumping share the owner check but use different mechanisms in the current prototype: direct position translation for travel and physics force for a jump. The project makes that implementation boundary visible, which is useful when evaluating movement behavior on shared obstacles."
+        ]
+      },
+      {
+        "id": "spawn",
+        "title": "Server-selected spawning",
+        "paragraphs": [
+          "When the player is spawned on the network, the server obtains a spawn transform from SpawnManager and sets the player's initial position and rotation. This keeps the choice of starting location separate from local keyboard control.",
+          "Respawn behavior lives in its own player component. The distinction matters because entering the game, moving through the course, and returning after failure are different stages of the same player lifecycle. Each needs a deliberate relationship to network ownership."
+        ]
+      },
+      {
+        "id": "platforms",
+        "title": "One source of truth for moving platforms",
+        "paragraphs": [
+          "MovingPlatform updates only on the server. It moves between configured bounds along a horizontal or vertical axis, reverses at the upper end, and waits for a randomized delay after returning to the lower end. The server therefore determines both the position and the timing of each obstacle.",
+          "The updated position is sent to clients through a ClientRpc, and clients apply it when they are not the server. A random delay is generated once by the shared authority instead of independently on every machine, preventing each client from inventing its own obstacle schedule."
+        ]
+      },
+      {
+        "id": "impacts",
+        "title": "Knockback and recovery events",
+        "paragraphs": [
+          "The network interaction layer includes a dedicated knockback object and player-respawn behavior. These features extend the course beyond movement alone: contact with an obstacle has a consequence, and the player needs a path back into the session afterward.",
+          "RPC messages coordinate these actions alongside the moving-platform synchronization. Keeping the events separate from ordinary input helps identify the difference between an intentional player movement and an externally triggered displacement or reset."
+        ]
+      },
+      {
+        "id": "session",
+        "title": "Session entry and presentation",
+        "paragraphs": [
+          "Host/client controls provide the entry point for a test session. Player camera handling and name-display components keep local presentation responsibilities separate from the shared game objects. Spawn management, movement, obstacle logic, and UI therefore form a small but connected multiplayer flow.",
+          "The portfolio diagram explains the ownership and synchronization model; it is not a gameplay capture. The source demonstrates the prototype's implementation directly. Network smoothing, bandwidth tuning, late-join robustness, and broader latency testing would be natural next stages before expanding this into a production multiplayer game."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Multiplayer project source",
+        "url": "https://github.com/thetruth2003/Mutliplayer_Parkour"
+      },
+      {
+        "label": "Movement ownership and jump logic",
+        "url": "https://github.com/thetruth2003/Mutliplayer_Parkour/blob/main/Assets/Scripts/Player/PlayerMovement.cs"
+      },
+      {
+        "label": "Server-driven moving platform",
+        "url": "https://github.com/thetruth2003/Mutliplayer_Parkour/blob/main/Assets/Scripts/Obstacles/MovingPlatform.cs"
+      }
+    ]
+  },
+  "vampire": {
+    "intro": [
+      "Vampire is a Unity 2D arena-combat project connecting player movement, aimed attacks, an orbiting weapon, ammunition, enemy spawning, health, and experience-based progression. It includes the menu and recovery states around the combat, so the interaction forms a repeatable run rather than stopping at a weapon demonstration.",
+      "My work brings the systems together around player state. Experience changes the encounter mix and unlocks an upgrade choice; damage changes the health display and can lead to game over; restarting returns the player to the combat loop."
+    ],
+    "sections": [
+      {
+        "id": "control",
+        "title": "Movement and aimed weapon behavior",
+        "paragraphs": [
+          "The player uses a top-down movement loop while weapon rotation follows the mouse direction. This separates navigation from aiming, allowing movement through the arena while choosing where an attack is directed. The project includes different weapon and projectile scripts rather than representing every attack through one visual effect.",
+          "An orbiting weapon adds a second spatial relationship: its position is calculated around the player instead of being aimed directly at a point. The player therefore carries both a directional attack interface and a nearby moving offensive element."
+        ]
+      },
+      {
+        "id": "combat",
+        "title": "Weapons, projectiles, and ammunition",
+        "paragraphs": [
+          "Gun, weapon, bullet, and passive-weapon components divide the responsibilities of creating attacks and handling their behavior. Ammunition presentation keeps a weapon's available resource visible to the player. Enemy melee and archer components supply different kinds of pressure in the arena.",
+          "This division gives the run several connected interactions: move to avoid contact, aim at a target, manage the current weapon state, and use the orbiting attack's proximity. The project is a compact setting for bringing those responsibilities together rather than claiming a large completed arsenal."
+        ]
+      },
+      {
+        "id": "health",
+        "title": "Health, healing, and defeat",
+        "paragraphs": [
+          "Damage clamps current health between zero and the maximum and refreshes the health bar. When health reaches zero, the player enters a guarded death path, updates the death counter, shows the game-over presentation, pauses time, and disables the player object.",
+          "Healing also respects the maximum and does not apply to a dead player. These checks give health a clear lifecycle: it can change during an active run, trigger defeat once, and communicate that state to the menu and player presentation."
+        ]
+      },
+      {
+        "id": "progression",
+        "title": "Experience and a deliberate upgrade moment",
+        "paragraphs": [
+          "Experience is accumulated into a level value using an XP-per-level threshold. Reaching level three opens an upgrade panel once and pauses the run so the player can make a choice. The implemented options increase maximum/current health or attack damage.",
+          "Selecting an option closes the panel and restores the time scale. The upgrade is therefore both a numerical change and an interaction state: combat pauses, the choice is presented, the selected benefit is applied, and play resumes. This closes a loop that would otherwise be only an XP counter."
+        ]
+      },
+      {
+        "id": "spawning",
+        "title": "Enemy composition follows player progression",
+        "paragraphs": [
+          "Spawner creates melee enemies from level one, introduces archers at level two, and adds a boss at level three with a guard against repeated boss creation. Spawn positions are randomized within configured bounds, and the repeat interval controls the base pace.",
+          "The level is read from the player, linking encounter composition to progression rather than an unrelated timer alone. ResetSpawner clears the boss flag for another run. These rules provide a concrete escalation model with a different enemy mix as the player gains experience."
+        ]
+      },
+      {
+        "id": "run-lifecycle",
+        "title": "Menus, retry, and the whole run",
+        "paragraphs": [
+          "Main-menu, death-panel, audio, health-pickup, and XP components sit around the central combat scripts. Pause/resume and retry behavior matter because they determine how a player enters, interrupts, loses, and repeats the experience.",
+          "The code is a prototype with tightly connected player and spawning responsibilities. It demonstrates a complete small gameplay loop and provides room to separate those concerns further as content grows. The portfolio illustration summarizes the loop; the linked source is the reference for its implemented mechanics."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Vampire source",
+        "url": "https://github.com/thetruth2003/Vampire"
+      },
+      {
+        "label": "Player health and upgrades",
+        "url": "https://github.com/thetruth2003/Vampire/blob/main/Assets/script/player.cs"
+      },
+      {
+        "label": "Level-based encounter spawning",
+        "url": "https://github.com/thetruth2003/Vampire/blob/main/Assets/script/spawner.cs"
+      }
+    ]
+  },
+  "snake": {
+    "intro": [
+      "Snake in Unreal is a C++ gameplay project that develops the classic collection-and-growth loop into a broader systems exercise. Beyond movement and tail segments, the source includes text-authored levels, an AI controller using breadth-first search, local human/AI modes, score presentation, and progression between levels.",
+      "My work explores Unreal's division between pawn, controller, world actor, game mode, and widgets. The familiar rules make the engineering easy to inspect: where movement is decided, how a board is generated, how an opponent finds food, and how a completed level changes the game state."
+    ],
+    "summary": "An Unreal Engine C++ Snake project with grid movement, dynamic growth, text-authored levels, BFS pathfinding, local player/AI modes, and level progression.",
+    "sections": [
+      {
+        "id": "core",
+        "title": "Grid movement and dynamic growth",
+        "paragraphs": [
+          "SnakePawn and SnakeTailSegment represent the moving player and its growing body. Direction changes are expressed through the snake's movement interface, while food actors connect collection to growth and score updates. The grid gives these interactions a shared spatial model.",
+          "The important relationship is between the head's movement and the occupied body positions. As the snake grows, navigating the board changes even when the input set remains small. This makes a familiar game useful for studying actor creation, state updates, and collision rules in C++."
+        ]
+      },
+      {
+        "id": "level-authoring",
+        "title": "Levels generated from text",
+        "paragraphs": [
+          "SnakeWorld loads numbered level files from the project's Content/Levels directory. Characters describe walls, floor, empty space, and door positions. Walls and floors use instanced static mesh components, while door entries can spawn their own actors.",
+          "The construction and reload paths clear existing instances and spawned actors before rebuilding. Walkable floor positions are retained as data, not just visual geometry. That same representation is reused when spawning food and searching for an AI path, so level authoring supplies both the scene and the gameplay map."
+        ]
+      },
+      {
+        "id": "food",
+        "title": "Food placement and walkable space",
+        "paragraphs": [
+          "Food is spawned from the known floor locations. The current implementation prefers a floor tile with walkable neighbors on all four sides, falling back to the full floor pool when that preferred set is empty. The chosen location is then used to create a food actor.",
+          "This is a specific placement heuristic, not a guarantee that every spawn is safe in every dynamic situation. The useful design connection is that food placement reads the same board data as the world and AI, instead of inventing positions independently of the level layout."
+        ]
+      },
+      {
+        "id": "ai",
+        "title": "An opponent that searches the board",
+        "paragraphs": [
+          "SnakeAIController recalculates after the snake enters a new tile. It finds the nearest food by distance, snaps the goal to the grid, and runs breadth-first search over the walkable tile set. Tiles occupied by its tail are excluded from the route.",
+          "A predecessor map reconstructs the discovered path. The next step becomes a direction request, with a check against immediately reversing into the opposite direction. Debug spheres and lines visualize the path. This makes pathfinding observable inside the level rather than hidden behind a single move-to command."
+        ]
+      },
+      {
+        "id": "modes",
+        "title": "Local players and AI modes",
+        "paragraphs": [
+          "GameMode contains branches for single-player, local PvP, cooperative play, and human/AI variants. It creates a second local player for the base two-human modes and can spawn an AI-controlled snake for the AI modes. Player-start tags distinguish the initial positions.",
+          "Switching modes also includes cleanup for extra local players and previously spawned AI. The contribution is mode and lifecycle logic in a local game; it is not advertised as online multiplayer. Additional depth variants exist in the code and require further integration and testing."
+        ]
+      },
+      {
+        "id": "progression",
+        "title": "Scoring, level completion, and the outro",
+        "paragraphs": [
+          "Food collection notifies GameMode with a controller identifier. Competitive modes keep separate player totals, while other modes use a shared collection counter. The in-game widget displays the appropriate score presentation.",
+          "After the configured collection target is reached, the game pauses and checks whether another numbered level exists. If it does, the world loads that layout, creates food, resets level counters, and resumes. Otherwise, the game enters its outro state. The progression is driven by the level data and explicit state transitions."
+        ]
+      },
+      {
+        "id": "interface",
+        "title": "Menus and input focus follow game state",
+        "paragraphs": [
+          "Main menu, gameplay, pause, and outro are explicit GameMode states. Changing state updates widgets, game pause status, cursor visibility, and input mode. Gameplay receives game input, while menus switch focus back to UI interaction.",
+          "Restarting reloads the current map. This completes the surrounding lifecycle of the Snake mechanics and shows how small rules can exercise a substantial part of Unreal's gameplay framework. The public README covers the original exercise; this breakdown also exposes the richer systems present in its source."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Snake project README",
+        "url": "https://github.com/thetruth2003/snake_game"
+      },
+      {
+        "label": "AI pathfinding",
+        "url": "https://github.com/thetruth2003/snake_game/blob/main/Source/SnakeGame/SnakeAIController.cpp"
+      },
+      {
+        "label": "Text-authored world",
+        "url": "https://github.com/thetruth2003/snake_game/blob/main/Source/SnakeGame/SnakeWorld.cpp"
+      },
+      {
+        "label": "Modes and progression",
+        "url": "https://github.com/thetruth2003/snake_game/blob/main/Source/SnakeGame/SnakeGameMode.cpp"
+      }
+    ],
+    "contributions": [
+      "C++ player control, snake growth, food collection, collision, and scoring.",
+      "Text-authored level generation with instanced floor and wall meshes.",
+      "Breadth-first-search AI using walkable tiles and tail occupancy.",
+      "Local player/AI mode logic, level progression, menus, and input-state transitions."
+    ]
+  },
+  "tenlivion-ev": {
+    "intro": [
+      "TENLIVION EV is a Flutter customer application built around the complete charging journey: discover a station, choose the right connector, understand the price, start a session, follow its progress, and review the result. The Android demo combines these steps in a consistent mobile experience instead of treating them as disconnected forms.",
+      "My work covers both the product interface and the application logic behind it. Alongside the map, charging screen, and wallet, the project includes explicit session states, recovery after interrupted operations, multilingual presentation, and a documented boundary for future backend integration."
+    ],
+    "summary": "A multilingual Flutter charging app with station discovery, connector selection, live session presentation, a demo wallet, and recovery-aware charging flows.",
+    "sections": [
+      {
+        "id": "driver-journey",
+        "title": "One connected driver journey",
+        "paragraphs": [
+          "The interface starts with a map-led discovery screen, compact search and filter controls, city selection, and browsable station cards. Drivers can move between discovery, history, a central QR entry point, wallet, and account areas through the bottom navigation.",
+          "A station card leads into connector selection and a start screen that brings the connector, current price quote, and selected demo card together. This keeps the decision context visible at the point of action. An active session then presents energy, elapsed time, amount, and a stop control; the result screen carries the final session information into history."
+        ],
+        "bullets": [
+          "Map and list discovery with search, filters, and favorites.",
+          "Station cards with visible kWh pricing when tariff data is available.",
+          "A charging flow that retains the selected connector and payment-method context.",
+          "History, account preferences, and wallet screens within the same navigation system."
+        ]
+      },
+      {
+        "id": "station-model",
+        "title": "Modeling stations, units, and connectors",
+        "paragraphs": [
+          "A charging location is modeled as Station → EVSE → Connector. This distinction matters because a station may contain several charging units, each exposing its own connectors and availability. The application presents those choices without assuming that a station-level status describes every plug.",
+          "Connector readiness also considers the age and completeness of the observation. Ready, in-use, unavailable, unknown, stale, and discovery-only cases are represented separately. The interface can therefore explain why a connector is visible but cannot currently proceed to a price review. Physical labels are displayed only when supplied rather than invented from internal IDs.",
+          "Published tariffs are presentation data, while a current price quote governs the start flow. Keeping those models separate makes it possible to show a convenient price preview without silently treating an old listing as the final accepted quote."
+        ]
+      },
+      {
+        "id": "session-states",
+        "title": "Separating a command from a charging outcome",
+        "paragraphs": [
+          "Pressing Start is a request to begin an operation; it is not evidence that energy is already flowing. The charging flow separates request acceptance, charging confirmation, stopping, completion, and payment. That distinction shapes both the controller and the information shown to the driver.",
+          "The repository interface exposes operations for quotes, start, stop, current session, refresh, history, and an event timeline. Energy and power are represented separately, and payment remains part of the charging snapshot. The wallet does not independently manufacture a successful payment record.",
+          "In the mock demonstration, controlled events move the experience through its states. The presentation can run automatically while the app is in the foreground, but uncertainty or operation errors stop that progression. The same separation keeps the demonstration useful for integration discussions."
+        ],
+        "code": "Discover → select connector → review quote and card\nStart requested → charging confirmed → stop requested\nSession completed → payment outcome → history"
+      },
+      {
+        "id": "recovery",
+        "title": "Recovery after a lost response or restart",
+        "paragraphs": [
+          "A missing response is not automatically a failed operation. The application retains the command intent and its idempotency key so it can query the existing operation instead of blindly creating another start or stop request.",
+          "An operation journal records the minimum references needed for recovery, including environment and account scope, intent type, and connector, quote, or session references. The journal is written before the command is sent. A storage failure blocks sending the operation, and an unresolved record is not discarded just because a local timer expires.",
+          "On reopening or returning to the app, the controller reads the saved references and reconciles them with the repository. Wrong scope, a mismatched session, or an unknown outcome keeps new commands blocked until the state can be understood. This is prototype recovery behavior exercised against the demo repository; real server guarantees still belong to the future backend contract."
+        ]
+      },
+      {
+        "id": "refresh",
+        "title": "Controlled refresh and readable feedback",
+        "paragraphs": [
+          "Session refresh is a read operation, separate from the demo event source and from start/stop commands. The visible foreground session uses controlled polling, avoids overlapping requests, and backs off after reading failures. Manual checks remain available.",
+          "Source timestamps support stale-data feedback. The interface can show that information needs refreshing instead of presenting an old energy or payment snapshot as current. A successful read resets the retry delay, while leaving the foreground stops unnecessary automatic reading.",
+          "These decisions are visible product behavior: they help the driver distinguish an active operation, a waiting response, and an outdated screen without needing to understand the transport implementation."
+        ]
+      },
+      {
+        "id": "wallet-localization",
+        "title": "Wallet, localization, and presentation",
+        "paragraphs": [
+          "The wallet demonstrates selecting, adding, removing, and choosing a default example card. Its card identities and session association are demo data; actual card numbers and banking credentials are not collected by this flow.",
+          "Turkish, English, and Polish interfaces share the same screens and support light, dark, and system themes. Common cards, headings, action treatments, and metrics give discovery and charging a consistent visual language. Noncritical preferences such as language, theme, and favorites are kept separate from operation-recovery storage."
+        ],
+        "media": [
+          {
+            "src": "/assets/media/ev-start.webp",
+            "alt": "TENLIVION EV Android session-start screen",
+            "caption": "Actual Android demo: connector, price, and session-start presentation."
+          },
+          {
+            "src": "/assets/media/ev-charging.webp",
+            "alt": "TENLIVION EV Android active charging screen",
+            "caption": "Actual Android demo: active session metrics and stop control."
+          },
+          {
+            "src": "/assets/media/ev-wallet.webp",
+            "alt": "TENLIVION EV Android demo wallet screen",
+            "caption": "Actual Android demo: example payment methods."
+          }
+        ]
+      },
+      {
+        "id": "integration",
+        "title": "An explicit backend integration boundary",
+        "paragraphs": [
+          "Flutter widgets use repository interfaces instead of talking directly to charging stations, OCPP, a payment provider, or the management panel. The intended integration is a customer API on the shared backend; the mobile application does not scrape the web panel or reuse its administrative session.",
+          "The current default is mock data. Selecting API mode produces an explicit contract-pending result rather than silently falling back to demonstration data. The handover documentation identifies the real JSON shapes, ownership rules, event semantics, and payment behavior that the backend team must provide.",
+          "The deliverable is an Android-tested customer prototype, source code, integration documentation, and automated tests. Live customer authentication, real bank collection, station control, and iOS device verification remain outside the completed demo scope."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Project README and Android demo",
+        "url": "https://github.com/thetruth2003/charge_station_app/blob/codex/flutter-prototype/README.md"
+      },
+      {
+        "label": "Application state and interface",
+        "url": "https://github.com/thetruth2003/charge_station_app/blob/codex/flutter-prototype/docs/mobile/CURRENT_STATE.md"
+      },
+      {
+        "label": "Repository interfaces and backend boundary",
+        "url": "https://github.com/thetruth2003/charge_station_app/blob/codex/flutter-prototype/docs/mobile/BACKEND_CONTRACT.md"
+      }
+    ]
+  },
+  "factory-check": {
+    "intro": [
+      "Factory Check is a Flutter and Firebase application for coordinating factory incidents across monitoring, operators, maintenance, and support teams. It follows an issue from the initial report through ownership, intervention, production recovery, and resolution, while preserving the notes and shift context that explain what happened.",
+      "My work connects the mobile workflow to operational data: machine status, incident history, responsibility transfers, downtime intervals, shift planning, end-of-shift reports, and read acknowledgements. The result is a field-test application that treats continuity between people and shifts as part of the core workflow."
+    ],
+    "summary": "A Flutter/Firebase operations app connecting incident ownership, machine downtime, immutable shift handovers, team calendars, reports, and read acknowledgements.",
+    "sections": [
+      {
+        "id": "incident-lifecycle",
+        "title": "A clear incident lifecycle",
+        "paragraphs": [
+          "The central workflow moves from open to assigned, intervention, and resolved. A live overview, machine list, team and owner filters, and completed-incident views help each role find the work relevant to it. Preset reasons depend on the incident type, and supporting notes, photos, and events remain attached to the same record.",
+          "When another team is needed, the current team can record why support is required and choose the destination team. An eligible member of that team can take ownership. Supervisors and administrators have wider intervention permissions, while monitoring and viewer roles follow their own narrower paths.",
+          "Each machine follows a single-active-incident policy. Reporting the same machine again returns the existing incident, where extra information can be added as a note. This keeps the current operational story together instead of splitting it across duplicate reports."
+        ]
+      },
+      {
+        "id": "production-downtime",
+        "title": "Production state is separate from incident state",
+        "paragraphs": [
+          "A machine can resume production before the incident's notes and follow-up are complete. Factory Check therefore tracks production state separately from the reporting workflow. Restarting production ends the downtime interval even if the incident remains open.",
+          "New intervals are recorded alongside the machine and incident update in a Firestore transaction. Each interval carries its company, incident, machine, start, and end references. The incident records the currently active interval so subsequent transitions close the correct period.",
+          "This model supports multiple stoppages associated with an incident and makes time-based reporting more precise. It also avoids treating every minute until administrative closure as lost production."
+        ],
+        "code": "Incident: open → assigned → intervention → resolved\nProduction: running ↔ stopped\nDowntime: start interval → end interval → retain history"
+      },
+      {
+        "id": "reporting",
+        "title": "Reports that preserve the meaning of the numbers",
+        "paragraphs": [
+          "Period reports include opened and closed incident counts, average first-acceptance time, total machine downtime, and a per-machine breakdown. The chosen date range clips downtime intervals at its boundaries; ongoing intervals contribute only up to the current time.",
+          "The report keeps machine durations separate. If two machines stop at the same time, both contribute machine downtime; that total is not presented as factory-wide closure time or OEE. First-acceptance averages use incidents with valid acknowledgement times rather than treating unaccepted reports as zero-delay responses.",
+          "Older records are handled without inventing historical precision. Known intervals contribute to the report, while incomplete legacy history is identified. An accumulated legacy duration is not arbitrarily distributed across calendar days. These choices make the reporting definitions inspectable."
+        ]
+      },
+      {
+        "id": "shift-handover",
+        "title": "Handovers that carry context and responsibility",
+        "paragraphs": [
+          "A handover stores the shift, destination team, notes, and a snapshot of selected open incidents. It also records who created it, who accepted it, and the relevant timestamps. The record is immutable; a correction is expressed as a new handover note so the original account remains available.",
+          "Acceptance can transfer operational responsibility. Open incidents still assigned to the outgoing person move to the incoming person; incidents that have already closed or been taken by someone else are left unchanged. Monitoring-role acceptance acknowledges the handover without taking operational ownership.",
+          "The workflow prevents self-acceptance and duplicate acceptance, and checks that the receiver belongs to an appropriate team. It is designed around personal accounts so the system can distinguish the person handing work over from the person receiving it."
+        ]
+      },
+      {
+        "id": "roster",
+        "title": "Team calendars and end-of-shift reports",
+        "paragraphs": [
+          "Administrators can inspect employee accounts and create shift plans with a person, day, start, end, and shift name. Overnight shifts are supported, and overlapping assignments are checked. Cancelled plans remain in the record, while plans with completed reports are protected from further changes.",
+          "Employees see their team's current Monday-to-Sunday plan. Their own shift card opens an end-of-shift report for the summary, encountered problems, and checks needed by the next shift. Reports remain immutable after submission.",
+          "The roster uses Europe/Warsaw for factory scheduling rather than changing its operating day when a phone changes time zones. The project documentation includes handling of overnight shifts and daylight-saving transitions. This is a planning calendar, with a defined relationship to incident records, rather than a claim of attendance tracking."
+        ]
+      },
+      {
+        "id": "team-notes",
+        "title": "Important notes and individual read receipts",
+        "paragraphs": [
+          "Team notes can target today or tomorrow and carry an important flag. They remain associated with a team even when an individual recipient has not yet been scheduled. Relevant notes appear on the home screen for the selected day.",
+          "Each person can add an individual read acknowledgement. The author and administrator can inspect who has read the note, making communication visible without equating a read receipt with completion of a task or acceptance of an incident handover.",
+          "This distinction gives the app three separate concepts: handing over responsibility, documenting the end of a shift, and confirming that a message was read. Keeping them separate makes the recorded history easier to interpret."
+        ]
+      },
+      {
+        "id": "access-data",
+        "title": "Role-aware data and an auditable event history",
+        "paragraphs": [
+          "Firebase Authentication identifies users, Firestore stores the operational records, and supporting photos use storage-backed uploads. Company membership and user roles shape the available queries and actions. Firestore rules also check membership, active-account status, permitted transitions, and ownership on the server.",
+          "The event history, notes, and handover snapshots preserve operational context across changes in status or personnel. Failed photo uploads can be retried on the same incident instead of forcing the user to create another report.",
+          "The code supports operator, monitoring, maintenance, technician, quality, warehouse, supervisor, administrator, and read-only roles. Compatibility with older machine records is retained, so this field-test version is not advertised as a finished commercial multi-tenant platform."
+        ]
+      },
+      {
+        "id": "delivery",
+        "title": "Multilingual delivery and field validation",
+        "paragraphs": [
+          "Turkish, English, and Polish interfaces support persistent language choice. The application includes both the original factory layout and a machine list, allowing navigation beyond the small set represented in the original plan. The displayed floorplan is a project asset, not a screenshot of the mobile UI.",
+          "The repository documents Flutter service and widget tests, Firestore rule tests, and emulator workflows covering incident transitions, responsibility transfer, overnight downtime, and report calculations. Roster validation also covers reports, important notes, and a second person's read acknowledgement.",
+          "The current delivery is a field-test application. Foreground alerts can support a controlled two-device test; notification functions are present in source, but background push deployment and real-device delivery validation remain separate work. Transactional changes require connectivity, and there is no durable offline command queue."
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Feature overview and incident data model",
+        "url": "https://github.com/thetruth2003/factory_app/blob/main/README.md"
+      },
+      {
+        "label": "Roster, team notes, and read acknowledgements",
+        "url": "https://github.com/thetruth2003/factory_app/blob/main/ROSTER.md"
+      },
+      {
+        "label": "Field-test guide",
+        "url": "https://github.com/thetruth2003/factory_app/blob/main/FIELD_TEST.md"
+      }
+    ]
+  },
+  "dark-descent": {
+    "intro": [
+      "Dark Descent is a collaborative action game with a dark fantasy setting. A Templar journeys through limbo, fighting demons and lost souls while trying to recover his faith. The published project describes fast combat and a magic system built around combining Holy, Fire, and Order.",
+      "My contribution focused on gameplay programming, the skill system, and player interactions. This showcase concentrates on that programming role within the team's wider game, art, and narrative production."
+    ],
+    "summary": "A dark fantasy action project built with a multidisciplinary team. My contribution focused on core gameplay, skill-system implementation, and player interactions.",
+    "subtitle": "Combat and skills in a dark fantasy world.",
+    "type": "Team action game project",
+    "sections": [
+      {
+        "id": "gameplay-context",
+        "title": "Gameplay shaped around action and magic",
+        "paragraphs": [
+          "The public release presents an isometric dungeon-combat experience with atmospheric fantasy and bullet-hell elements. Its spell concept combines three magical aspects into stronger incantations, giving the game's action an identity beyond a single repeated attack.",
+          "That game-level context matters when describing the programming work: player interaction and skill behavior belong to a shared combat experience. The purpose of the systems is to make the player's actions work inside the encounter and presentation created by the team."
+        ]
+      },
+      {
+        "id": "programming-contribution",
+        "title": "My programming contribution",
+        "paragraphs": [
+          "My portfolio contribution covers the core gameplay layer, skill implementation, and player interactions. These are the parts that connect the player's decisions to behavior in the game, and they form the focus of this case study.",
+          "I worked within a multidisciplinary project rather than owning every part of the finished experience. The environment, artwork, encounter context, audio, and broader creative direction are collaborative work. Describing my role separately makes it clear which programming responsibilities this project demonstrates."
+        ],
+        "bullets": [
+          "Core gameplay programming.",
+          "Implementation of player-facing skill behavior.",
+          "Player interaction systems.",
+          "Integration of gameplay work with the team's wider experience."
+        ]
+      },
+      {
+        "id": "integration-focus",
+        "title": "Connecting mechanics to the shared experience",
+        "paragraphs": [
+          "The implementation focus was the relationship between the player's interaction loop and the skill system. A feature has to fit the surrounding game: the player must be able to use it in the intended context, understand the resulting action, and continue playing.",
+          "Working in a team also means maintaining clear boundaries between a programmer's systems and the assets or behaviors supplied by other disciplines. This project represents that integration work alongside the mechanics themselves."
+        ]
+      },
+      {
+        "id": "project-evidence",
+        "title": "Project evidence and team credit",
+        "paragraphs": [
+          "The published game page provides the team's downloadable prototype and its game-level description. The original project image shown here belongs to the collaborative production; the portfolio cover is separate presentation artwork.",
+          "This case study highlights my stated gameplay and skill-system responsibilities. It does not claim sole authorship of the game's magic design, complete codebase, or visual production."
+        ],
+        "media": [
+          {
+            "src": "/assets/media/dark-descent.webp",
+            "alt": "Original Dark Descent team-project artwork",
+            "caption": "Original team-project artwork. My contribution focused on gameplay programming."
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Published Dark Descent game page",
+        "url": "https://futuregames.itch.io/darkdescent"
+      }
+    ]
+  },
+  "the-last-branch": {
+    "heading": "Parkour and gameplay in an Unreal Engine adventure",
+    "intro": [
+      "The Last Branch is a collaborative Unreal Engine adventure about exploring an abandoned temple as a child of the Godtree. The published game places the player among lost spirits and an infestation of Rot, with a journey toward restoring life beyond the temple.",
+      "My contribution was parkour and gameplay mechanics. I worked on the behavior through which the player navigates and interacts with the game, as part of a wider production involving programming, design, art, animation, audio, and quality assurance."
+    ],
+    "summary": "An Unreal Engine adventure made with a multidisciplinary team. My work focused on parkour and player-facing gameplay mechanics.",
+    "subtitle": "Parkour and gameplay in an Unreal Engine adventure.",
+    "type": "Team adventure game",
+    "category": "unreal",
+    "tags": [
+      "Unreal Engine",
+      "Team project",
+      "Parkour"
+    ],
+    "contributions": [
+      "Parkour and traversal gameplay programming.",
+      "Player-facing gameplay mechanics within the Unreal Engine project.",
+      "Integration of my mechanics with the team’s shared game experience."
+    ],
+    "sections": [
+      {
+        "id": "adventure",
+        "title": "An adventure built around exploration",
+        "paragraphs": [
+          "The game’s setting gives movement a clear purpose: the player explores the temple, encounters lingering spirits, and works to overcome the Rot. Parkour is part of navigating that authored environment rather than a separate obstacle-course demonstration.",
+          "The public project describes a seven-week production by an eighteen-person team. That context shaped a shared game with many disciplines contributing to one experience. My role within it was focused on the parkour and gameplay layer."
+        ]
+      },
+      {
+        "id": "parkour",
+        "title": "My parkour contribution",
+        "paragraphs": [
+          "My work centered on the player’s traversal mechanics: the behavior that lets a player navigate the environment through parkour. The emphasis of this contribution is gameplay programming and integration within Unreal Engine.",
+          "Traversal must be considered in the context of the surrounding world. The player experiences the controls, environment, and presentation together, so the programming contribution is meaningful as part of that complete interaction."
+        ]
+      },
+      {
+        "id": "gameplay",
+        "title": "Player-facing gameplay mechanics",
+        "paragraphs": [
+          "Alongside parkour, I worked on gameplay mechanics used by the player. This connects traversal to the broader adventure rather than treating movement as the entirety of the project.",
+          "The focus of this case study is that hands-on gameplay role. It demonstrates contributing a defined set of mechanics inside a collaborative Unreal production, where features must fit a shared game rather than an isolated test scene."
+        ]
+      },
+      {
+        "id": "production",
+        "title": "Contribution within a shared production",
+        "paragraphs": [
+          "The game’s environment, visual identity, narrative, audio, and wider systems come from the multidisciplinary team. My work is presented here specifically as parkour and gameplay programming.",
+          "The original project visual and published game page provide context for the complete production. The Windows game can be explored through the team’s itch.io page, while this portfolio highlights my contribution within it."
+        ],
+        "media": [
+          {
+            "src": "/assets/media/last-branch.webp",
+            "alt": "Original The Last Branch team-project visual",
+            "caption": "Original team-project visual. My contribution: parkour and gameplay mechanics."
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Published game and team credits",
+        "url": "https://futuregames.itch.io/the-last-branch"
+      }
+    ]
+  },
+  "tower-defense": {
+    "intro": [
+      "This Unity team project connects tower combat, enemy movement, and an economy-driven spawning loop. Different tower behaviors create distinct pressures along the path: targeted arrows, bomb projectiles, and a sustained inferno attack that becomes stronger while it stays on a target.",
+      "My portfolio contribution focuses on tower behavior, attack and defense mechanics, and enemy encounters. The source shows a more specific set of systems than a generic tower-defence description: shared health and respawning, path-aware targeting, spline movement, collision pushback, and gold/cooldown constraints on spawning."
+    ],
+    "summary": "A Unity team game with arrow, bomb, and escalating-damage towers, spline-following enemies, respawn behavior, and gold-based unit spawning.",
+    "subtitle": "Distinct tower behaviors. Connected combat systems.",
+    "contributions": [
+      "Tower types with projectile and sustained-damage attack behavior.",
+      "Attack and defense gameplay integrated with shared health and respawn systems.",
+      "Enemy encounter and spawning work within the team's gameplay loop."
+    ],
+    "sections": [
+      {
+        "id": "tower-foundation",
+        "title": "A shared foundation for tower behavior",
+        "paragraphs": [
+          "The base Tower component defines health, maximum health, damage, healing, death, and respawn behavior. Attack strength and animation references are available to specialized tower types, while a cooldown handler can bring a defeated tower back into play.",
+          "This common layer keeps lifecycle behavior separate from the details of a particular weapon. Arrow, bomber, and inferno towers can differ in how they acquire and damage a target while still participating in the same damage-and-recovery model.",
+          "The source connects these systems to player gold and animation state. Those links make a tower's behavior part of the wider game loop rather than an isolated firing script."
+        ]
+      },
+      {
+        "id": "projectile-towers",
+        "title": "Arrow and bomb attacks",
+        "paragraphs": [
+          "ArrowTower checks its current target, reacquires when necessary, and uses a firing cooldown to control attack rate. Among enemies inside its detection area, it selects the one with the shortest remaining path to the base. A shot spawns an arrow, assigns the target, and passes in the tower's attack power.",
+          "BomberTower uses its own range and firing cadence. Its target search considers enemies inside range and chooses the one closest to the base target before spawning a bomb projectile.",
+          "The distinction is useful in a small team production: different attacks can share the same encounter space while maintaining their own timing, targeting, and projectile behavior."
+        ],
+        "bullets": [
+          "Arrow attacks with configurable fire rate and target-linked damage.",
+          "Bomb projectiles with range checks and cooldown-driven firing.",
+          "Threat prioritization based on progress toward the base."
+        ]
+      },
+      {
+        "id": "inferno",
+        "title": "Sustained damage and target-loss recovery",
+        "paragraphs": [
+          "InfernoTower has a different combat rhythm. It applies damage continuously while holding a target and increases its damage rate over time. The longer the connection lasts, the greater the pressure on that enemy.",
+          "When the target dies or leaves range, the tower clears it, resets the damage ramp, and enters a short reacquisition cooldown. A laser sprite is positioned, rotated, and scaled between the firing point and target, linking the visual beam to the active attack.",
+          "Death and respawn also reset the inferno state and visual feedback. This is an example of handling the full lifecycle of an ability rather than implementing only its damage calculation."
+        ]
+      },
+      {
+        "id": "enemy-paths",
+        "title": "Spline movement and collision pushback",
+        "paragraphs": [
+          "Enemy movement uses Unity's SplineAnimate component. An enemy receives a path, configures its movement speed, finds its position along the spline, and begins following it. Remaining path distance is available to targeting logic.",
+          "Contact with the base applies damage and temporarily pushes the enemy backward along its path. The pushback logic pauses normal movement, adjusts normalized spline progress over a configured duration, and then resumes travel.",
+          "This connects navigation, combat, and targeting through the same path representation. The movement is not just visual: progress along the route helps towers decide which enemy presents the most immediate threat."
+        ]
+      },
+      {
+        "id": "spawn-economy",
+        "title": "Gold and cooldowns shape spawning",
+        "paragraphs": [
+          "SpawnEnemy connects a UI button to unit creation. It checks available gold, subtracts the chosen unit's spawn cost, and places the new enemy at the current checkpoint. The button is enabled according to affordability and its spawn cooldown.",
+          "Player gold also receives periodic income. That creates a resource constraint alongside timing: the player cannot use every spawn action immediately, even when a particular unit is available.",
+          "The inspected source implements button-driven spawning and encounter pacing. This case study describes those concrete mechanics rather than assuming a separate automated wave director."
+        ],
+        "code": "Gold + spawn cooldown → spawn at checkpoint\nSpline movement → enter tower range → combat\nDamage / pushback / respawn → continue the encounter"
+      },
+      {
+        "id": "collaboration",
+        "title": "My contribution within the team project",
+        "paragraphs": [
+          "My responsibility was the tower and enemy-encounter gameplay work, integrated with the team's wider game. The technical breakdown explains the systems visible in the shared repository; it does not attribute every source file or visual asset to one person.",
+          "Working across attack behavior, movement, and lifecycle state makes this project a useful example of connected gameplay programming. The mechanics need to agree on what a live target is, where it is going, when an attack is allowed, and what happens after defeat or respawn."
+        ],
+        "media": [
+          {
+            "src": "/assets/media/tower-defense.webp",
+            "alt": "Original screenshot of the Unity tower-defense team project",
+            "caption": "Actual team-game screenshot. My contribution focused on tower and enemy-encounter gameplay."
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Team project source",
+        "url": "https://github.com/azzinoth01/EDUGameJamTeam2"
+      },
+      {
+        "label": "Tower implementations",
+        "url": "https://github.com/azzinoth01/EDUGameJamTeam2/tree/main/Assets/Scripts/Towers"
+      },
+      {
+        "label": "Enemy and spawning code",
+        "url": "https://github.com/azzinoth01/EDUGameJamTeam2/tree/main/Assets/Scripts/Units"
+      }
+    ]
+  },
+  "aponun-koyu": {
+    "heading": "A connected village-life game",
+    "intro": [
+      "Apo’nun Köyü is an independently developed first-person village-life game set in rural Anatolia. Farming, inventory, trading, vehicles, quests, dialogue, and cinematic storytelling form a connected experience shaped by economic pressure and local political satire.",
+      "My work covers the game's interconnected systems and the tools used to create its content: reusable quest steps, crop definitions, dialogue authoring, world-state tracking, vehicle configuration, and save/load coordination. The project includes a substantial playable systems foundation alongside active content and integration work."
+    ],
+    "sections": [
+      {
+        "id": "gameplay-at-a-glance",
+        "title": "Gameplay at a glance",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "System",
+                "What it contributes"
+              ],
+              [
+                "Farming",
+                "Planting, watering, staged growth, crop drying, harvesting, and field-wide operations."
+              ],
+              [
+                "Inventory and trading",
+                "Item stacks, inventory slots, a hotbar, drag-and-drop interfaces, NPC shops, and sales."
+              ],
+              [
+                "Economy",
+                "Money management, product pricing, purchases, and configurable sale deductions with receipt breakdowns."
+              ],
+              [
+                "Quests and choices",
+                "Sequential objectives, side-quest support, action counters, location triggers, day conditions, and state-changing choices."
+              ],
+              [
+                "Dialogue and cinematics",
+                "NPC conversations, voiced subtitle lines, timing controls, camera transitions, and persistent cutscene sequences."
+              ],
+              [
+                "Vehicles",
+                "WheelCollider driving, configurable powertrain and suspension settings, entering/exiting, and farming interactions."
+              ],
+              [
+                "Building",
+                "Placement previews, rotation, socket snapping, and placement-validity feedback."
+              ],
+              [
+                "World and daily activities",
+                "Day progression, day/night presentation, and a fictional football-coupon side activity using in-game currency."
+              ],
+              [
+                "Persistence",
+                "Coordinated saves for quest progress, player state, inventory, crops, buildings, vehicles, and scene metadata."
+              ],
+              [
+                "Development tools",
+                "Quest authoring, state inspection, subtitle editing, economy configuration, and environment tools."
+              ]
+            ],
+            "label": "Gameplay at a glance"
+          },
+          {
+            "type": "paragraph",
+            "text": "The clips below are original development recordings. They show systems at different stages of production."
+          }
+        ]
+      },
+      {
+        "id": "farming-from-seed-to-harvest",
+        "title": "Farming: from seed to harvest",
+        "blocks": [
+          {
+            "type": "media",
+            "name": "collect",
+            "src": "/assets/media/apo-details/collect.webp",
+            "alt": "Crop harvesting",
+            "caption": "Original development recording: harvesting mature crops.",
+            "width": 1200,
+            "height": 675,
+            "bytes": 131652,
+            "animation": "https://raw.githubusercontent.com/thetruth2003/Aponun_koyu/main/Images/collect.gif"
+          },
+          {
+            "type": "paragraph",
+            "text": "Farming is built around **fields containing individual planting sockets**. Each `SeedPoint` owns a crop's runtime state, while `SeedData` supplies reusable growth configuration."
+          },
+          {
+            "type": "list",
+            "items": [
+              "**Planting:** assign a seed type and spawn its initial growth stage.",
+              "**Growth:** advance through prefab stages when a new game day begins and the crop has been watered.",
+              "**Watering:** track water state per planting socket and display a configurable visual indicator.",
+              "**Drying:** count unwatered days and remove the crop when its drying threshold is reached.",
+              "**Harvesting:** collect a mature crop through its `Collectable` component, then clear the planting socket.",
+              "**Persistence:** serialize seed type, growth stage, water state, dry-day count, and treatment state.",
+              "**Field operations:** apply planting and watering across a field through `Field.PlantAll()` and `Field.WaterAll()`."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "The seed-type definitions cover crops such as wheat, corn, tomatoes, potatoes, carrots, pumpkins, peppers, beans, and melons. Crop assets determine the actual visuals and configuration."
+          }
+        ]
+      },
+      {
+        "id": "agricultural-tools-and-vehicle-interactions",
+        "title": "Agricultural tools and vehicle interactions",
+        "blocks": [
+          {
+            "type": "media",
+            "name": "build",
+            "src": "/assets/media/apo-details/build.webp",
+            "alt": "Field and vehicle interaction",
+            "caption": "Original development recording: field and vehicle interactions.",
+            "width": 1200,
+            "height": 675,
+            "bytes": 140746,
+            "animation": "https://raw.githubusercontent.com/thetruth2003/Aponun_koyu/main/Images/build.gif"
+          },
+          {
+            "type": "paragraph",
+            "text": "Field-level operations allow machinery to interact with multiple planting sockets. The repository includes seeding, watering, and harvesting components alongside drivable vehicles."
+          },
+          {
+            "type": "table",
+            "rows": [
+              [
+                "Component",
+                "Responsibility"
+              ],
+              [
+                "`SeederMachine`",
+                "Detect a field through a trigger and call its planting operation."
+              ],
+              [
+                "`Sprinkler`",
+                "Watering interaction component."
+              ],
+              [
+                "`Harvester_blade`",
+                "Harvesting attachment behavior."
+              ],
+              [
+                "`Field`",
+                "Coordinate planting sockets and their stored state."
+              ]
+            ],
+            "label": "Agricultural tools and vehicle interactions"
+          },
+          {
+            "type": "paragraph",
+            "text": "The crop state also includes a pesticide-treatment flag. Further treatment effects and equipment behavior remain part of the farming design and development work."
+          }
+        ]
+      },
+      {
+        "id": "trading-and-the-village-economy",
+        "title": "Trading and the village economy",
+        "blocks": [
+          {
+            "type": "media",
+            "name": "trade",
+            "src": "/assets/media/apo-details/trade.webp",
+            "alt": "Trading interface",
+            "caption": "Original development recording: selling inventory items.",
+            "width": 400,
+            "height": 225,
+            "bytes": 11422,
+            "animation": "https://raw.githubusercontent.com/thetruth2003/Aponun_koyu/main/Images/trade.gif"
+          },
+          {
+            "type": "paragraph",
+            "text": "Harvested items feed into the inventory and trading loop. Item definitions provide icons, prefabs, stack limits, and sale prices; the sales interface calculates a transaction from the items placed in its slots."
+          },
+          {
+            "type": "list",
+            "items": [
+              "NPC shop and sales interfaces connect world interactions to inventory UI.",
+              "Sales remove the selected quantities and award money.",
+              "Sale events update item-specific counters, allowing quests to react to what the player sells.",
+              "`Muhasebeci` provides money management and receipt-based purchase/sale calculations.",
+              "Configurable charges support percentage, flat, and per-kilogram calculations.",
+              "Charge presets model commissions, transport costs, taxes, equipment costs, and household deductions."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "These systems support the game's economic theme: a successful harvest is only one part of making a living. The sales UI and the newer receipt-based economy are separate integration points in the current source."
+          }
+        ]
+      },
+      {
+        "id": "inventory-hotbar-and-item-interactions",
+        "title": "Inventory, hotbar, and item interactions",
+        "blocks": [
+          {
+            "type": "media",
+            "name": "inventory",
+            "src": "/assets/media/apo-details/inventory.webp",
+            "alt": "Inventory interaction",
+            "caption": "Original development recording: inventory slots and item interactions.",
+            "width": 400,
+            "height": 225,
+            "bytes": 10028,
+            "animation": "https://raw.githubusercontent.com/thetruth2003/Aponun_koyu/main/Images/inventory.gif"
+          },
+          {
+            "type": "paragraph",
+            "text": "The inventory system connects collected resources, usable items, and trading."
+          },
+          {
+            "type": "list",
+            "items": [
+              "Slot-based item storage with quantities and stack limits.",
+              "Drag-and-drop slot interaction.",
+              "Inventory and hotbar presentation.",
+              "Item definitions carrying icons, world prefabs, usable prefabs, and seed configuration.",
+              "Collection and sales behavior connected to gameplay state.",
+              "Dedicated inventory persistence code."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "This gives farming, interaction, and trading a shared item model instead of separate inventories for each mechanic."
+          }
+        ]
+      },
+      {
+        "id": "modular-quests-and-progression",
+        "title": "Modular quests and progression",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The quest system describes objectives as reusable steps. `QuestEditorAsset` contains quest data, `QuestContainer` holds step definitions, and implementations of `IQuestStep` provide each objective's behavior."
+          },
+          {
+            "type": "code",
+            "text": "QuestEditorAsset\n└── QuestContainer\n    └── IQuestStep\n        ├── BuyItemStep\n        ├── SellItemStep\n        ├── HarvestItemStep\n        ├── TalkToNPCStep\n        ├── GoToLocationStep\n        ├── WaitForDayStep\n        ├── ChoiceStep\n        ├── SpendMoneyStep\n        └── ModifyStatStep"
+          },
+          {
+            "type": "list",
+            "items": [
+              "**Action objectives:** buying, selling, harvesting, and talking.",
+              "**World objectives:** reaching an identified location or waiting for a game day.",
+              "**Decisions and consequences:** choices and explicit changes to counters, flags, or string state.",
+              "**Progression:** sequential step evaluation, quest chains, and side-quest handling.",
+              "**Feedback:** UI displays the current quest, objective type, and requirements.",
+              "**Persistence:** quest progress and supporting state can be saved and restored."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "`GameStateTracker` stores named counters, flags, strings, and NPC dialogue indices. Gameplay events can update these keys, while objectives read them to determine progress."
+          },
+          {
+            "type": "heading",
+            "text": "Location-based objectives"
+          },
+          {
+            "type": "media",
+            "name": "location",
+            "src": "/assets/media/apo-details/location.webp",
+            "alt": "Location-based quest",
+            "caption": "Original development recording: a location-triggered quest objective.",
+            "width": 1200,
+            "height": 675,
+            "bytes": 107674,
+            "animation": "https://raw.githubusercontent.com/thetruth2003/Aponun_koyu/main/Images/location.gif"
+          },
+          {
+            "type": "paragraph",
+            "text": "Location identifiers and triggers connect exploration to the quest system. This allows a story step to depend on arriving at a particular place in the village."
+          },
+          {
+            "type": "heading",
+            "text": "Quest authoring tools"
+          },
+          {
+            "type": "paragraph",
+            "text": "A custom Unity editor supports creating and inspecting quest content. The original editor screenshots are preserved below."
+          },
+          {
+            "type": "media",
+            "name": "quest1",
+            "src": "/assets/media/apo-details/quest1.webp",
+            "alt": "Item-sale objective in the Unity development scene",
+            "caption": "Original project screenshot: item-sale quest objective and Inspector configuration.",
+            "width": 1400,
+            "height": 758,
+            "bytes": 72784
+          },
+          {
+            "type": "media",
+            "name": "quest2",
+            "src": "/assets/media/apo-details/quest2.webp",
+            "alt": "Item-sale quest configuration in Unity",
+            "caption": "Original project screenshot: item-sale quest objective and Inspector configuration.",
+            "width": 1400,
+            "height": 758,
+            "bytes": 74162
+          },
+          {
+            "type": "media",
+            "name": "quest3",
+            "src": "/assets/media/apo-details/quest3.webp",
+            "alt": "NPC conversation objective in Unity",
+            "caption": "Original project screenshot: NPC conversation objective and development scene.",
+            "width": 1400,
+            "height": 758,
+            "bytes": 72564
+          },
+          {
+            "type": "media",
+            "name": "quest4",
+            "src": "/assets/media/apo-details/quest4.webp",
+            "alt": "NPC conversation objective in Unity",
+            "caption": "Original project screenshot: NPC conversation objective and development scene.",
+            "width": 1400,
+            "height": 758,
+            "bytes": 72564
+          }
+        ]
+      },
+      {
+        "id": "npc-dialogue-and-character-driven-storytelling",
+        "title": "NPC dialogue and character-driven storytelling",
+        "blocks": [
+          {
+            "type": "media",
+            "name": "npc",
+            "src": "/assets/media/apo-details/npc.webp",
+            "alt": "NPC conversation",
+            "caption": "Original development recording: NPC interaction and dialogue.",
+            "width": 1200,
+            "height": 675,
+            "bytes": 137120,
+            "animation": "https://raw.githubusercontent.com/thetruth2003/Aponun_koyu/main/Images/npc.gif"
+          },
+          {
+            "type": "paragraph",
+            "text": "NPC interactions combine dialogue data, player control, camera framing, audio, and quest state."
+          },
+          {
+            "type": "list",
+            "items": [
+              "`NPCDialogData` organizes conversations into sections and lines.",
+              "Lines support text, a voice clip, a delay before playback, a duration override, and a pause afterward.",
+              "Subtitle visibility can change during delays and pauses.",
+              "`NPCInteraction` manages the active conversation and updates its associated gameplay flag.",
+              "Dialogue indices and named state keys provide a foundation for tracking conversations across progression."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "**Relationship design:** the earlier project design also described NPC trust, character dispositions, and relationship-dependent quests, dialogue, and prices. These remain part of the intended village-life experience. The current inspected conversation code does not establish the complete 0–100 trust and pricing pipeline, so those behaviors are not presented here as fully integrated features."
+          }
+        ]
+      },
+      {
+        "id": "cutscenes-cameras-and-scripted-movement",
+        "title": "Cutscenes, cameras, and scripted movement",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The cinematic layer connects story moments to quest and world triggers."
+          },
+          {
+            "type": "list",
+            "items": [
+              "Trigger-key-based clip selection.",
+              "One-time, repeatable, and sequential playback modes.",
+              "Sequence groups ordered by priority.",
+              "Saved played-clip IDs and sequence progress.",
+              "Subtitle timing, camera transitions, fade behavior, and movement components.",
+              "Quest-driven activation through `CutsceneActivator`.",
+              "Waypoint-based vehicle sequences through `CarAutoDrive`, which uses a `NavMeshAgent`."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "This supports authored events such as a vehicle journey or a conversation sequence while keeping playback state across sessions."
+          }
+        ]
+      },
+      {
+        "id": "vehicle-driving-and-configuration",
+        "title": "Vehicle driving and configuration",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Vehicles have their own gameplay and tuning layer, including entering/exiting, camera support, engine audio, and a speedometer."
+          },
+          {
+            "type": "paragraph",
+            "text": "The newer `VehicleConfig` ScriptableObject exposes:"
+          },
+          {
+            "type": "list",
+            "items": [
+              "Vehicle mass and drag.",
+              "Gear ratios, differential ratio, and shift settings.",
+              "Idle/max RPM, engine torque, and a torque curve.",
+              "Steering angle and handbrake force.",
+              "Suspension spring, damper, and travel.",
+              "Forward and sideways friction stiffness.",
+              "Front-, rear-, and all-wheel-drive configuration."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "The repository also contains earlier vehicle scripts. Scene setup determines which controller and configuration are active."
+          }
+        ]
+      },
+      {
+        "id": "building-and-world-interaction",
+        "title": "Building and world interaction",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The construction component provides an interactive placement workflow:"
+          },
+          {
+            "type": "list",
+            "items": [
+              "Select a foundation and preview prefab.",
+              "Position the preview using a camera raycast.",
+              "Rotate it with the mouse wheel.",
+              "Snap to a socket when one is targeted.",
+              "Show green/red placement feedback.",
+              "Place with the left mouse button or cancel with the right mouse button."
+            ]
+          },
+          {
+            "type": "paragraph",
+            "text": "Other world components include doors, collectable objects, tree tools, and day/night presentation."
+          }
+        ]
+      },
+      {
+        "id": "daily-progression-and-village-side-activities",
+        "title": "Daily progression and village side activities",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "Game-day progression connects farming to the wider village loop. The source includes day-based quest conditions and a football-coupon side activity."
+          },
+          {
+            "type": "paragraph",
+            "text": "`FutbolKuponManager` models daily matches, home/draw/away selections, locked odds, combined tickets, stakes, and resolved results using in-game money. It adds another economic interaction alongside producing and selling crops."
+          }
+        ]
+      },
+      {
+        "id": "save-load-and-world-persistence",
+        "title": "Save/load and world persistence",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "`SaveCoordinator` is the common entry point for manual saves, loading from the menu, and autosave triggers."
+          },
+          {
+            "type": "table",
+            "rows": [
+              [
+                "Data",
+                "Persistence responsibility"
+              ],
+              [
+                "Quest progress",
+                "Active step indices and quest state."
+              ],
+              [
+                "Player",
+                "Position, rotation, vehicle-entry state, and active vehicle identifier."
+              ],
+              [
+                "World",
+                "Delegated save/load operations for tools, money, buildings, vehicles, crops, and inventory."
+              ],
+              [
+                "Story",
+                "Dialogue/state keys and cutscene playback progress."
+              ],
+              [
+                "Session metadata",
+                "Day, money, last quest, scene reference, and save timestamp."
+              ]
+            ],
+            "label": "Save/load and world persistence"
+          },
+          {
+            "type": "paragraph",
+            "text": "The current implementation combines JSON files, PlayerPrefs, and existing world-save components. `SaveCoordinator` calls into `savetest` for parts of world persistence. Consolidating these paths and validating restoration across scenes and vehicle transitions remains active development work."
+          }
+        ]
+      },
+      {
+        "id": "architecture-and-development-tools",
+        "title": "Architecture and development tools",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "The project combines ScriptableObjects for reusable content with MonoBehaviour components for scene behavior."
+          },
+          {
+            "type": "table",
+            "rows": [
+              [
+                "Area",
+                "Main entry points"
+              ],
+              [
+                "Item and crop data",
+                "`ItemData`, `SeedData`"
+              ],
+              [
+                "Quest definitions and execution",
+                "`QuestEditorAsset`, `QuestContainer`, `IQuestStep`, `QuestManager`"
+              ],
+              [
+                "Shared gameplay state",
+                "`GameStateTracker`"
+              ],
+              [
+                "Conversations",
+                "`NPCDialogData`, `NPCInteraction`"
+              ],
+              [
+                "Cinematic orchestration",
+                "`CutsceneManager`, `CutsceneClip`"
+              ],
+              [
+                "Vehicle tuning",
+                "`VehicleConfig`, `VehicleController`"
+              ],
+              [
+                "Economy",
+                "`Muhasebeci`, `ProductCatalog`"
+              ],
+              [
+                "Persistence",
+                "`SaveCoordinator`, `QuestSave`, inventory/world save components"
+              ]
+            ],
+            "label": "Architecture and development tools"
+          },
+          {
+            "type": "paragraph",
+            "text": "The Editor directory contains quest authoring, a gameplay-state viewer, subtitle and cutscene editors, an economy inspector, and tree-painting tools."
+          }
+        ]
+      },
+      {
+        "id": "opening-the-project",
+        "title": "Opening the project",
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "Clone this repository:"
+            ]
+          },
+          {
+            "type": "code",
+            "text": "   git clone https://github.com/thetruth2003/Aponun_koyu.git"
+          },
+          {
+            "type": "list",
+            "items": [
+              "In Unity Hub, choose **Add / Add project from disk** and select the repository root.",
+              "Use the editor version recorded in ProjectVersion.txt: **6000.2.6f2** for the current committed project.",
+              "Allow Unity to resolve packages and import available assets.",
+              "Open the main menu or the integration test scene:"
+            ]
+          },
+          {
+            "type": "table",
+            "rows": [
+              [
+                "Scene",
+                "Purpose"
+              ],
+              [
+                "`Assets/Scenes/Main Menu.unity`",
+                "Main menu and game entry flow."
+              ],
+              [
+                "`Assets/Scenes/main/MAİN_TEST.unity`",
+                "Integration/sandbox scene for gameplay systems. Note the uppercase Turkish `İ` in the filename."
+              ],
+              [
+                "`Assets/Scenes/main/aponun orjinal koyu.unity`",
+                "Additional main village scene."
+              ]
+            ],
+            "label": "Opening the project"
+          },
+          {
+            "type": "paragraph",
+            "text": "Development scenes may contain older and newer components together. Check scene references, required assets, active objects, and startup settings when opening the project on a new machine."
+          }
+        ]
+      },
+      {
+        "id": "default-controls",
+        "title": "Default controls",
+        "blocks": [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "Input",
+                "Action"
+              ],
+              [
+                "W A S D / arrow keys",
+                "Move"
+              ],
+              [
+                "Mouse",
+                "Look around"
+              ],
+              [
+                "Left Shift",
+                "Run"
+              ],
+              [
+                "Space",
+                "Jump"
+              ],
+              [
+                "E",
+                "Interact"
+              ],
+              [
+                "Left mouse button",
+                "Selected tool, collection, farming, or placement action"
+              ],
+              [
+                "Tab / F",
+                "Toggle inventory"
+              ],
+              [
+                "Hold Q",
+                "Radial menu"
+              ],
+              [
+                "1–9",
+                "Hotbar selection"
+              ],
+              [
+                "Esc",
+                "Pause"
+              ],
+              [
+                "V / L",
+                "Manual save / load latest save"
+              ],
+              [
+                "Mouse wheel in build mode",
+                "Rotate placement preview"
+              ],
+              [
+                "Right mouse button in build mode",
+                "Cancel placement"
+              ]
+            ],
+            "label": "Default controls"
+          },
+          {
+            "type": "paragraph",
+            "text": "Bindings depend on the components and Inspector settings active in the scene."
+          }
+        ]
+      },
+      {
+        "id": "development-direction",
+        "title": "Development direction",
+        "blocks": [
+          {
+            "type": "list",
+            "items": [
+              "Expand story and quest chains around the village's characters and locations.",
+              "Extend the consequences of choices across dialogue and progression.",
+              "Develop relationship-driven NPC behavior and trust-based interactions.",
+              "Consolidate economy and persistence paths and validate scene transitions.",
+              "Refine vehicles, agricultural tools, and the enter/exit flow.",
+              "Expand quest history and tracking, localization, crafting, and navigation features from the original design.",
+              "Measure scene performance and improve presentation alongside gameplay integration."
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "label": "Detailed English README and gameplay recordings",
+        "url": "https://github.com/thetruth2003/Aponun_koyu"
+      },
+      {
+        "label": "Gameplay systems",
+        "url": "https://github.com/thetruth2003/Aponun_koyu/tree/main/Assets/Scripts"
+      },
+      {
+        "label": "Custom Unity editor tools",
+        "url": "https://github.com/thetruth2003/Aponun_koyu/tree/main/Assets/Editor"
+      }
+    ]
+  }
+}

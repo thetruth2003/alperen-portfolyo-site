@@ -1,0 +1,44 @@
+{
+  "headline": "Gameplay & Software Developer",
+  "profile": "Gameplay and software developer working across Unity/C#, Unreal Engine/C++, and web and mobile applications. My experience combines gameplay programming for PC and mobile, full-stack development, multidisciplinary game projects, and leadership of a five-person indie team. I build reusable mechanics, developer tools, UI systems, and the data flows that connect them.",
+  "experience": [
+    {
+      "role": "Team Lead · Producer, Lead Developer & Game Designer",
+      "company": "The Truth Company",
+      "dates": "2024 – Present",
+      "context": "Independent game team · 5 members",
+      "points": ["Lead a five-person indie team, coordinating technical development, production priorities, and creative direction.", "Build the game's technical and design foundation, including custom gameplay systems, UI architecture, dialogue, and event-data pipelines.", "Combine hands-on programming with game design and oversight of the team's code and overall project direction."]
+    },
+    {
+      "role": "Gameplay Developer",
+      "company": "Futuregames Projects",
+      "dates": "2024 – Present",
+      "context": "Collaborative game projects and game jams",
+      "points": ["Contributed to more than nine international game and game-jam projects as a core gameplay developer.", "Implemented modular gameplay loops, developer tools, and UI systems in Unity and C#.", "Worked with multidisciplinary teams through code reviews and sprint planning, contributing to games published on Futuregames' itch.io page."]
+    },
+    {
+      "role": "Gameplay Programmer",
+      "company": "Udo Games",
+      "dates": "February 2021 – January 2023",
+      "context": "Ankara, Türkiye · PC and mobile games",
+      "points": ["Developed gameplay systems, mechanics, and custom tools for PC and mobile titles using Unity and C#.", "Created reusable quest, UI, cooldown, and combat components.", "Collaborated with designers and artists to integrate gameplay features in a cross-disciplinary production environment.", "Participated in sprint planning and maintained reusable, clearly structured gameplay code."]
+    },
+    {
+      "role": "Full Stack Developer Intern",
+      "company": "ARA Technology",
+      "dates": "2020 – 2022",
+      "context": "Internal automation and web applications",
+      "points": ["Developed admin dashboards and client panels using C# and SQL.", "Supported backend architecture for internal automation systems.", "Collaborated in Agile sprints with a team of more than five developers, using Git and Trello."]
+    }
+  ],
+  "education": [
+    {"title": "B.Sc. in Computer Engineering", "institution": "Yalova University", "dates": "2021 – 2023", "description": "Graduation project in fintech automation; coursework in full-stack development, game design, and network security."}
+  ],
+  "skills": [
+    {"title": "Languages", "text": "C#, C++, Python, JavaScript, Dart"},
+    {"title": "Game development", "text": "Unity, Unreal Engine, gameplay systems, ScriptableObjects, physics, Unity Netcode for GameObjects"},
+    {"title": "Applications & data", "text": "Flutter, Firebase, SQL, .NET Core, React, Laravel, Bootstrap"},
+    {"title": "Tools & practices", "text": "Git, Figma, Trello, Notion, object-oriented design, debugging, optimization, code review, sprint planning"}
+  ],
+  "languages": "Turkish · Native   /   English · C2   /   Polish · B1"
+}

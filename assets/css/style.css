@@ -1,4 +1,4 @@
-/* Alperen Baltacı / portfolio v2 */:root{
+/* Alperen Baltacı / portfolio v3 */:root{
   --bg:#121414;
   --surface:#1a1d1c;
   --line:#343a36;
@@ -1959,3 +1959,63 @@ a,button{
     min-height:44px
   }
 }
+/* Detailed case studies and professional experience. */
+.case-facts{display:grid;grid-template-columns:1.1fr 1.3fr 1fr;gap:24px;padding:26px 0;border-block:1px solid var(--line);margin-top:32px}
+.case-facts strong{display:block;font-size:13px;margin-top:8px;font-weight:500}
+.detailed-story{grid-template-columns:230px minmax(0,1fr);gap:72px;align-items:start}
+.story-sticky{position:sticky;top:120px}
+.detailed-story>.story-aside{align-self:stretch}
+.detailed-story .story-aside h2{font-size:30px;margin:16px 0 24px}
+.case-nav summary{cursor:pointer;font-size:12px;color:var(--accent);padding:10px 0}
+.case-nav nav{display:grid;gap:2px;max-height:55vh;overflow-y:auto;padding-right:8px;scrollbar-width:thin}
+.case-nav nav a{display:flex;align-items:baseline;gap:10px;font-size:11px;line-height:1.5;padding:9px 6px;border-left:1px solid var(--line);color:var(--muted)}
+.case-nav nav a:hover,.case-nav nav a:focus-visible{color:var(--accent);background:var(--surface)}
+.case-nav nav a span{font:9px var(--mono);color:var(--accent)}
+.story-contact{margin-top:24px;font-size:12px}
+.detailed-story .story-content{min-width:0;max-width:850px}
+.detailed-story .story-content>section+section{margin-top:48px;padding-top:48px}
+.detailed-story .story-content h2{font-size:28px;line-height:1.25;letter-spacing:-.035em;margin:10px 0 22px;text-wrap:balance}
+.story-content h3{font-size:18px;line-height:1.4;margin:28px 0 14px}
+.detailed-story .story-content p{font-size:15px;line-height:1.9;color:#bdc5be;margin-bottom:18px}
+.detailed-story .story-content .eyebrow{font:10px/1.6 var(--mono);color:var(--accent);margin:0}
+.case-list{list-style:disc;padding-left:22px;margin:18px 0 24px;color:#bdc5be;font-size:14px;line-height:1.85}
+.case-list li+li{margin-top:9px}
+.case-list li::marker{color:var(--accent)}
+.detailed-story .contributions li{font-size:14px}
+.story-content code{font-family:var(--mono);font-size:.88em;overflow-wrap:anywhere;color:var(--accent)}
+.story-content pre{background:#0d1110;border:1px solid var(--line);border-radius:5px;padding:24px;overflow-x:auto;max-width:100%;line-height:1.8;margin:22px 0}
+.story-content pre code{white-space:pre;overflow-wrap:normal;font-size:12px;color:#cbd6cb}
+.case-table{overflow-x:auto;margin:24px 0;border:1px solid var(--line);border-radius:5px}
+.case-table table{border-collapse:collapse;width:100%;font-size:13px;line-height:1.7}
+.case-table th,.case-table td{text-align:left;vertical-align:top;padding:16px;border-bottom:1px solid var(--line)}
+.case-table th{color:var(--accent);background:var(--surface)}
+.case-table td{color:#bdc5be;min-width:150px}
+.case-table tr:last-child td{border-bottom:0}
+.case-media{margin:28px 0;padding:14px;border:1px solid var(--line);background:var(--surface);border-radius:6px}
+.case-media img{height:auto;width:auto;max-height:650px;max-width:100%;object-fit:contain;margin:auto;border-radius:3px}
+.case-media figcaption{font-size:11px;color:var(--muted);line-height:1.7;margin-top:12px}
+.case-media .button{margin-top:14px;font-size:12px;min-height:44px}
+.source-links{display:flex;flex-wrap:wrap;gap:12px}
+.source-links a{display:block;border:1px solid var(--line);padding:12px 16px;font-size:12px;color:var(--accent)}
+.resume-actions{display:flex;flex-wrap:wrap;gap:10px;flex-shrink:0}
+.resume-jump{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:12px;color:var(--accent);padding-bottom:8px}
+.resume-jump a{padding:8px 0}
+.resume-section{margin-top:44px}
+.resume-section>.eyebrow{font:10px/1.6 var(--mono);color:var(--accent);margin-bottom:10px}
+.resume-section p{font-size:14px;line-height:1.9}
+.experience-entry{position:relative;padding:0 0 32px 25px;border-left:1px solid var(--line);margin-left:4px}
+.experience-entry:before{content:'';position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.experience-entry:last-child{padding-bottom:0}
+.experience-heading{display:flex;align-items:baseline;justify-content:space-between;gap:20px}
+.experience-heading h3{font-size:18px;line-height:1.4;letter-spacing:-.025em}
+.experience-heading .experience-company{color:var(--accent);font-size:14px;margin:5px 0}
+.experience-heading .experience-dates,.resume-education span{font:11px/1.8 var(--mono);flex-shrink:0;color:var(--muted)}
+.resume-section .experience-context{font-size:12px;margin:5px 0 12px}
+.experience-entry .case-list{font-size:13px;margin:12px 0 0}
+.resume-skills{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.resume-skills h3{font-size:15px;margin-bottom:7px;color:var(--accent)}
+.resume-education p{margin-top:12px}
+@media(max-width:1100px){.detailed-story{gap:36px;grid-template-columns:200px minmax(0,1fr)}}
+@media(max-width:800px){.detailed-story{grid-template-columns:minmax(0,1fr);gap:30px}.story-sticky{position:static}.case-nav{border:1px solid var(--line);padding:8px 15px;border-radius:4px}.case-nav nav{max-height:350px}.case-nav nav a{font-size:13px;min-height:44px}.story-contact{display:none}.case-facts{grid-template-columns:1fr 1fr}.case-facts>div:last-child{grid-column:1/-1}.experience-heading{flex-direction:column;gap:4px}.resume-actions{width:100%}.detailed-story .story-content h2{font-size:26px}}
+@media(max-width:600px){.case-facts{gap:20px}.case-facts strong{font-size:12px}.detailed-story .story-content p{font-size:14px;line-height:1.85}.detailed-story .story-content h2{font-size:25px}.detailed-story .story-content>section+section{margin-top:34px;padding-top:34px}.case-list,.detailed-story .contributions li{font-size:13px}.story-content pre{padding:16px}.story-content pre code{font-size:11px}.case-table th,.case-table td{padding:12px}.case-media{padding:9px;margin-block:22px}.resume-skills{grid-template-columns:1fr}.experience-entry{padding-left:19px}.experience-heading h3{font-size:17px}.resume-section p{font-size:13px}.resume-actions .button{font-size:12px;padding-inline:16px}}
+@media print{.resume-actions,.resume-jump{display:none!important}.resume-section{margin-top:20px}.experience-entry{break-inside:avoid;padding-bottom:15px;border-color:#bbb}.experience-heading{flex-direction:row}.experience-heading h3{font-size:10pt}.experience-heading .experience-company,.experience-heading .experience-dates,.experience-context,.resume-skills h3{color:#333!important}.experience-entry .case-list,.resume-section p{font-size:9pt;color:#333;line-height:1.5}.resume-skills{grid-template-columns:1fr 1fr}.experience-entry:before{background:#555}.resume-education span{color:#444}}
